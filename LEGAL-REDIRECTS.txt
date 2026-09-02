@@ -1,0 +1,8 @@
+Legal page consolidation redirects (apply as 301 at host)
+
+/website-terms-of-use/  ->  /website-policy/
+/website-cookie-policy/  ->  /website-policy/
+/website-privacy-policy/  ->  /popia-policy/
+/application-terms-of-use/  ->  /software-policy/
+/application-privacy-policy/  ->  /popia-policy/
+/terms-of-engagement/  ->  /software-policy/

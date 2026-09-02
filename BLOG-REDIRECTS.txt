@@ -1,0 +1,16 @@
+Blog prune/consolidate redirects (apply as 301 at host)
+
+/2025/11/11/software-features-dont-make-you-profitable-processes-do/  ->  /2025/11/28/software-features-dont-make-you-profitable-better-business-processes-do/   # Software Features Don’t Make You Profitable… Processes Do
+/2022/01/07/how-erp-benefits-industry-4-0-in-the-manufacturing-industry/  ->  /2022/01/07/understanding-industry-4-0-and-erp-in-the-manufacturing-industry/   # How ERP Benefits Industry 4.0 in the Manufacturing Industry
+/2022/01/09/manufacturers-4-ways-to-survive-the-pre-christmas-chaos/  ->  /2022/01/09/how-your-manufacturing-business-can-survive-the-pre-christmas-chaos/   # Manufacturers: 4 Ways to Survive the Pre-Christmas Chaos
+/2022/01/09/survive-the-pre-christmas-madness/  ->  /2022/01/09/how-your-manufacturing-business-can-survive-the-pre-christmas-chaos/   # Survive the pre-Christmas madness
+/2022/01/06/the-lingering-effects-of-covid-19-on-business-and-how-to-survive-and-thrive-in-2022/  ->  /articles/   # Covid 19 - Business and Beyond
+/2022/01/07/business-survival-tips-for-covid-19-and-eskom/  ->  /articles/   # Business survival tips for Covid-19 and Eskom
+/2022/01/06/warehousing-post-pandemic-goes-digital-in-2021/  ->  /articles/   # Warehousing Post-Pandemic Goes Digital in 2021
+/2022/01/07/clean-up-your-business-and-improve-potential-profit-in-2020/  ->  /articles/   # Clean Up Your Business and Improve Potential Profit in 2020
+/2022/01/07/set-yourself-up-for-success-in-2021-with-these-changes/  ->  /articles/   # Set Yourself Up for Success in 2021 with These Changes
+/2022/01/07/using-erp-for-20-20-business-vision-for-2020/  ->  /articles/   # Use ERP for 2020 vision
+/2022/01/06/how-to-be-well-prepared-for-plant-shutdown-this-festive-season-with-erp/  ->  /articles/   # How to be well-prepared for plant shutdown this festive season with ERP
+/2022/01/09/business-owner-no-time-to-go-away-this-holiday/  ->  /articles/   # Business Owner: No time to Go Away this Holiday?
+/2022/01/09/3-guaranteed-ways-to-run-a-leaner-meaner-sme-this-winter/  ->  /articles/   # 3 Guaranteed Ways to Run a Leaner, Meaner SME this Winter
+/2022/01/06/we-must-rebuild-now-how-manufacturers-and-engineering-companies-are-using-tech-to-recover/  ->  /articles/   # How Manufacturers Use ERP to Recover Post-Pandemic
