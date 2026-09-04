@@ -1,0 +1,47 @@
+/* ===== QuickEasy legal document styling (scoped .qe-legal) ===== */
+.qe-legal{--qe-red:#cb333b;--qe-ink:#2d2926;--qe-ink-2:#4a4744;--qe-body:#514d4a;--qe-muted:#8a857f;--qe-paper:#f4f3f1;--qe-line:#e5e3e0;--qe-white:#fff;--qe-radius:6px;font-family:"Open Sans",-apple-system,Segoe UI,Roboto,sans-serif;color:var(--qe-body);line-height:1.7;font-size:16px;background:var(--qe-white)}
+.qe-legal *{box-sizing:border-box}
+.qe-legal .qe-wrap{max-width:940px;margin:0 auto;padding:0 24px}
+
+/* header band */
+.qe-legal .lg-head{background:linear-gradient(180deg,#fbfaf9,var(--qe-paper));border-bottom:1px solid var(--qe-line);padding:52px 0 40px}
+.qe-legal .lg-eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--qe-red);margin:0 0 12px}
+.qe-legal h1{font-family:"Open Sans";font-weight:800;font-size:clamp(28px,4.4vw,42px);line-height:1.1;letter-spacing:-.01em;color:var(--qe-ink);margin:0 0 14px;text-wrap:balance}
+.qe-legal .lg-meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--qe-muted);margin-top:6px}
+.qe-legal .lg-meta b{color:var(--qe-ink-2);font-weight:600}
+.qe-legal .lg-intro{font-size:17px;color:var(--qe-ink-2);max-width:70ch;margin:16px 0 0}
+
+/* body layout: sticky TOC + prose */
+.qe-legal .lg-body{display:grid;grid-template-columns:1fr;gap:0;padding:40px 0 80px}
+@media(min-width:900px){.qe-legal .lg-body{grid-template-columns:230px 1fr;gap:48px;align-items:start}}
+.qe-legal .lg-toc{display:none}
+@media(min-width:900px){.qe-legal .lg-toc{display:block;position:sticky;top:24px;font-size:13.5px}}
+.qe-legal .lg-toc ol{list-style:none;margin:0;padding:0;counter-reset:s;display:flex;flex-direction:column;gap:1px}
+.qe-legal .lg-toc a{display:block;padding:5px 10px;color:var(--qe-muted);text-decoration:none;border-left:2px solid var(--qe-line);border-radius:0 4px 4px 0}
+.qe-legal .lg-toc a:hover{color:var(--qe-ink);background:var(--qe-paper);border-left-color:var(--qe-red)}
+
+/* company info block */
+.qe-legal .lg-company{background:var(--qe-paper);border:1px solid var(--qe-line);border-left:3px solid var(--qe-red);border-radius:0 var(--qe-radius) var(--qe-radius) 0;padding:18px 22px;margin:0 0 32px;font-size:14.5px}
+.qe-legal .lg-company b{color:var(--qe-ink)}
+.qe-legal .lg-company .r{margin:2px 0}
+
+/* prose */
+.qe-legal .lg-prose{min-width:0}
+.qe-legal section.lg-sec{padding:22px 0;border-top:1px solid var(--qe-line);scroll-margin-top:20px}
+.qe-legal section.lg-sec:first-of-type{border-top:0;padding-top:4px}
+.qe-legal h2{font-family:"Open Sans";font-weight:700;font-size:21px;color:var(--qe-ink);margin:0 0 12px;letter-spacing:-.005em}
+.qe-legal h2 .n{color:var(--qe-red);font-variant-numeric:tabular-nums;margin-right:10px}
+.qe-legal h3{font-size:16px;font-weight:700;color:var(--qe-ink-2);margin:18px 0 6px}
+.qe-legal p{margin:0 0 12px;max-width:72ch}
+.qe-legal strong{color:var(--qe-ink);font-weight:600}
+.qe-legal a.inl{color:var(--qe-red);text-decoration:underline;text-decoration-color:var(--qe-line)}
+.qe-legal a.inl:hover{text-decoration-color:var(--qe-red)}
+.qe-legal ul,.qe-legal ol.lo{margin:0 0 12px;padding-left:22px}
+.qe-legal ul li,.qe-legal ol.lo li{margin:5px 0;max-width:70ch}
+.qe-legal ul li::marker{color:var(--qe-red)}
+.qe-legal dl.defs{margin:0 0 12px}
+.qe-legal dl.defs dt{font-weight:700;color:var(--qe-ink);margin-top:10px}
+.qe-legal dl.defs dd{margin:0 0 0 0;padding-left:0}
+.qe-legal .lg-note{background:var(--qe-paper);border:1px solid var(--qe-line);border-radius:var(--qe-radius);padding:12px 16px;font-size:13.5px;color:var(--qe-ink-2);margin:14px 0}
+.qe-legal .lg-updated{margin-top:28px;padding-top:16px;border-top:1px solid var(--qe-line);font-size:13px;color:var(--qe-muted)}
+.qe-legal ::selection{background:var(--qe-red);color:#fff}
