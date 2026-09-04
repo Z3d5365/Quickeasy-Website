@@ -106,4 +106,41 @@
         });
     });
   });
+
+  /* ---------- Pricing currency toggle ---------- */
+  // ZAR is the base. USD/THB are indicative, derived from fixed rates and
+  // rounded to the nearest 1. Update these two rates to re-peg all prices.
+  var CUR = {
+    ZAR: { rate: 1,     symbol: "R" },
+    USD: { rate: 0.056, symbol: "$" },
+    THB: { rate: 1.90,  symbol: "฿" }
+  };
+
+  function formatPrice(n) {
+    // Thousands separators, no decimals (already rounded).
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function renderPrices(cur) {
+    var c = CUR[cur] || CUR.ZAR;
+    document.querySelectorAll(".price").forEach(function (el) {
+      var zar = parseFloat(el.getAttribute("data-zar"));
+      if (isNaN(zar)) return;
+      el.textContent = c.symbol + formatPrice(Math.round(zar * c.rate));
+    });
+    document.querySelectorAll(".currency-toggle__btn").forEach(function (b) {
+      var on = b.getAttribute("data-cur") === cur;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  var curToggle = document.querySelector(".currency-toggle");
+  if (curToggle) {
+    curToggle.addEventListener("click", function (e) {
+      var btn = e.target.closest(".currency-toggle__btn");
+      if (btn) renderPrices(btn.getAttribute("data-cur"));
+    });
+    renderPrices("ZAR");
+  }
 })();

@@ -1,0 +1,44 @@
+# Site restructure redirects (apply as 301 at host)
+# Format: OLD-PATH  ->  NEW-PATH   # note
+# Added during the nav/IA restructure & build-standards conformance pass.
+
+# --- Products menu removed (page discarded; Implementation Methodology kept) ---
+/bos-overview/                 ->  /business-operating-system/   # BOS ERP Overview
+/cloud-hosting/                ->  /pricing/             # Cloud Hosting (cloud services now on Pricing)
+/tech-specs/                   ->  /                     # Technical Specs
+
+# --- Referral partner page removed ---
+/become-a-referral-partner/    ->  /contact-us/          # Become a Referral Partner
+
+# --- Resources tutorials removed (Resources menu replaced by Support) ---
+/accounting-tutorials/         ->  /blog/                # Accounting Tutorials
+/sql-tutorials/                ->  /blog/                # SQL Tutorials
+/vat-types/                    ->  /blog/                # VAT Types
+/templates-and-design/         ->  /blog/                # Templates & Design
+
+# --- Articles page removed (content lives in the topic-grouped blog) ---
+/articles/                     ->  /blog/                # Latest Articles index
+/articles/page/2/              ->  /blog/
+/articles/page/3/              ->  /blog/
+/articles/page/4/              ->  /blog/
+/articles/page/5/              ->  /blog/
+/articles/page/6/              ->  /blog/
+/articles/page/7/              ->  /blog/
+
+# --- Legacy flat-URL blog posts -> canonical dated URLs ---
+/3-ways-erp-helps-manufacturers-do-more-with-less/                               ->  /2022/01/07/3-ways-erp-helps-manufacturers-do-more-with-less/
+/head-in-the-cloud/                                                              ->  /2022/01/09/head-in-the-cloud-9-compelling-reasons-why-using-the-cloud-for-business-should-be-your-next-move/
+/why-cloud-erp-is-your-businesss-vaccine-against-future-disruptions/             ->  /2022/01/06/why-cloud-erp-is-your-businesss-vaccine-against-future-disruptions/
+/why-local-erp-is-still-better-for-local-businesses/                             ->  /2022/01/07/why-local-erp-is-still-better-for-local-businesses/
+/why-modern-erp-is-the-right-fit-for-engineering-companies/                      ->  /2022/01/07/why-modern-erp-is-the-right-fit-for-engineering-companies/
+/why-smes-are-implementing-erp-solutions-how-to-do-it-yourself/                  ->  /2022/01/07/why-smes-are-implementing-erp-solutions-how-to-do-it-yourself/
+/understanding-industry-4-0-and-erp-in-the-manufacturing-industry/              ->  /2022/01/07/understanding-industry-4-0-and-erp-in-the-manufacturing-industry/
+/the-benefits-and-burdens-of-industry-4-0-and-erp-for-manufacturing/           ->  /2022/01/07/the-benefits-and-burdens-of-industry-4-0-and-erp-for-manufacturing/
+/how-erp-and-the-future-of-work-in-south-africas-digital-economy-are-intrinsically-linked/  ->  /2022/01/06/how-erp-and-the-future-of-work-in-south-africas-digital-economy-are-intrinsically-linked/
+
+# --- Legacy author archives & alias stubs ---
+/author/cadmin/                ->  /blog/                # WordPress author archive
+/author/qeadmin/               ->  /blog/                # WordPress author archive
+/bos-er/                       ->  /bos-erp/             # typo/alias stub
+/contact/                      ->  /contact-us/          # alias stub
+/th/contact-us/                ->  /contact-us/          # legacy Thai contact mirror

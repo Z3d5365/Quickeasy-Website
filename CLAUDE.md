@@ -12,6 +12,7 @@ approach and worked examples for this exact site:
 
 | Task | Skill to invoke |
 |------|-----------------|
+| Build/convert a site, folder structure, CMS-stripping, stack | `web-builder-skills:website-build-standards` |
 | Contact forms / relay/API wiring | `web-builder-skills:contact-form-integration` |
 | Homepage / landing-page sales copy & structure | `web-builder-skills:website-sales-tool` |
 | Technical or content SEO, sitemap, robots, structured data, IndexNow | `web-builder-skills:website-seo` |
@@ -35,13 +36,27 @@ Skills are **drafting aids, not legal advice**; flag attorney review for legal p
 
 ## Architecture (clean rebuild)
 
-- `assets/css/site.css` — design system (tokens, header/nav, footer, sections, cards, forms).
-- `assets/js/site.js` — vanilla nav + contact-form handler (per the contact-form skill).
+- `assets/css/main.css` — design system (tokens, header/nav, footer, sections, cards,
+  pricing, forms). One central stylesheet per the build-standards skill.
+  (`assets/css/legal.css` is the one allowed second sheet, for legal pages only.)
+- `assets/js/main.js` — vanilla nav, contact-form handler, and pricing currency toggle.
 - `assets/img/…` — brand/hero/client images (relocated off `wp-content`).
 - Pages are plain HTML using these assets with **root-relative** paths (`/assets/…`, `/pricing/`).
+- **Nav & footer are duplicated in every page** (no build system). Change them with a
+  one-off Node sweep over all pages, not by hand file-by-file.
 - Contact form: recipient switches by hostname — live `quickeasysoftware.com` →
   `info@quickeasysoftware.com`; anywhere else (localhost/staging) → `info@vibecraftedsoftware.com`.
-  Set `RELAY_URL` in `site.js` once the relay endpoint is provided.
+  Set `RELAY_URL` in `main.js` once the relay endpoint is provided.
+
+## Information architecture
+
+- Top nav: Home · Pricing · Apps · Blogs · **Support** (Documentation, Customer Service) ·
+  About · Contact · [Book a Demo]. The old **Products** and **Resources** menus were removed.
+- Blogs menu = 8 topic anchors into `/blog/` + **All Blogs**. Blog posts keep their
+  date-based URLs (`/YYYY/MM/DD/slug/`) — an intentional, redirect-backed exception to the
+  build-standard's nav-mirrored folders, to preserve SEO. Do not move them.
+- Removed pages (Products pages, referral partner, Resources tutorials, `/articles/`,
+  legacy flat posts/author archives) are 301-redirected in `SITE-REDIRECTS.txt`.
 
 ## Conventions
 

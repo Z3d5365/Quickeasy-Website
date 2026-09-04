@@ -128,6 +128,64 @@ p{margin:0 0 1em}
 .clients{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:34px 50px;margin-top:36px}
 .clients img{height:50px;width:auto;object-fit:contain}
 
+/* ---------- industry verticals band ---------- */
+.verticals{list-style:none;margin:34px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.verticals li{margin:0}
+.vertical{display:inline-flex;align-items:center;gap:11px;padding:13px 22px;border:1px solid var(--line);border-radius:999px;background:var(--surface);box-shadow:var(--shadow-sm);font-weight:700;color:var(--ink);font-size:15.5px}
+.vertical::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ink);flex:0 0 auto}
+
+/* ---------- documentation cards ---------- */
+.doc-card{display:flex;flex-direction:column;text-align:left;transition:border-color .2s,box-shadow .2s,transform .1s}
+.doc-card:hover{text-decoration:none;border-color:var(--ink);box-shadow:var(--shadow);transform:translateY(-2px)}
+.doc-mark{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;height:108px;margin-bottom:20px;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper)}
+.doc-mark b{font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1}
+.doc-mark span{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--graphite)}
+.doc-card h3{margin-bottom:8px}
+.doc-card p{flex:1}
+.doc-link{margin-top:16px;color:var(--red);font-weight:700;font-size:13px}
+
+/* ---------- hero product mock (inline SVG, no external asset) ---------- */
+.hero-media .hero-mock{width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--line);box-shadow:0 24px 60px -28px rgba(45,41,38,.5)}
+
+/* ---------- module cards (typographic, icon-free) ---------- */
+.mod-card{display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s,transform .1s}
+.mod-card:hover{text-decoration:none;border-color:var(--ink);box-shadow:var(--shadow);transform:translateY(-2px)}
+.mod-num{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--ink);line-height:1;padding-bottom:14px;margin-bottom:16px;border-bottom:2px solid var(--line);font-variant-numeric:tabular-nums}
+.mod-card h3{font-size:17px;margin:0 0 8px}
+.mod-card p{flex:1;font-size:15px;color:var(--body)}
+.mod-go{margin-top:14px;color:var(--red);font-weight:700;font-size:13px}
+
+/* ---------- pricing (currency toggle + cards) ---------- */
+.price-toolbar{text-align:center;margin-bottom:8px}
+.currency-toggle{display:inline-flex;gap:4px;padding:5px;border:1px solid var(--line);border-radius:999px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.currency-toggle__btn{appearance:none;-webkit-appearance:none;border:0;background:none;font:inherit;font-weight:700;font-size:14px;color:var(--ink-2);padding:9px 18px;border-radius:999px;cursor:pointer;transition:background .15s,color .15s}
+.currency-toggle__btn:hover{color:var(--ink)}
+.currency-toggle__btn.is-active{background:var(--ink);color:#fff}
+.price-toolbar__note{color:var(--muted);font-size:13px;margin:12px 0 0}
+.price-group-title{margin:48px 0 24px;font-size:20px}
+.price-grid{display:grid;gap:22px;grid-template-columns:1fr;margin:0 auto}
+@media(min-width:760px){.price-grid--2{grid-template-columns:repeat(2,1fr);max-width:820px}}
+.price-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px 26px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.price-card--featured{border-color:var(--ink);box-shadow:var(--shadow)}
+.price-card__badge{position:absolute;top:-11px;left:26px;background:var(--ink);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+.price-card__name{font-size:19px;margin:0 0 6px;color:var(--ink)}
+.price-card__desc{font-size:14.5px;color:var(--body);margin:0 0 18px}
+.price-card__price{margin:0 0 4px;font-size:15px;color:var(--muted)}
+.price-card__price .price{font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+.price-card__unit{font-size:14px;color:var(--muted);font-weight:600}
+.price-card__min{font-size:13px;color:var(--muted);margin:0 0 18px}
+.price-card__list{list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:var(--body)}
+.price-card__list li{position:relative;padding-left:24px}
+.price-card__list li::before{content:"";position:absolute;left:0;top:.4em;width:13px;height:13px;border-radius:50%;background:var(--red-wash);border:1px solid var(--red)}
+.price-card__list li::after{content:"";position:absolute;left:4px;top:.56em;width:5px;height:2.5px;border-left:2px solid var(--red);border-bottom:2px solid var(--red);transform:rotate(-45deg)}
+.price-card .btn{margin-top:auto;align-self:flex-start}
+.price-tiers{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column}
+.price-tiers li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid var(--line)}
+.price-tiers li:first-child{border-top:0}
+.price-tiers__name{font-weight:600;color:var(--ink);font-size:15px}
+.price-tiers__name em{display:block;font-style:normal;font-size:12.5px;color:var(--muted);font-weight:400}
+.price-tiers .price{font-weight:800;color:var(--ink);font-size:18px;white-space:nowrap;font-variant-numeric:tabular-nums}
+
 /* ---------- forms (contact) ---------- */
 .form-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .contact-form{display:flex;flex-direction:column;gap:16px;max-width:560px}
@@ -163,6 +221,16 @@ tbody tr:last-child td{border-bottom:0}
 .check-list li::before{content:"";position:absolute;left:0;top:.35em;width:16px;height:16px;border-radius:50%;background:var(--red-wash);border:1px solid var(--red)}
 .check-list li::after{content:"";position:absolute;left:5px;top:.55em;width:6px;height:3px;border-left:2px solid var(--red);border-bottom:2px solid var(--red);transform:rotate(-45deg)}
 .check-list time{color:var(--muted);font-size:13px;margin-right:8px;white-space:nowrap}
+
+/* ---------- blog post list (topic-grouped, icon-free) ---------- */
+.post-list{list-style:none;margin:0;padding:0}
+.post-list li{margin:0;border-top:1px solid var(--line)}
+.post-list li:last-child{border-bottom:1px solid var(--line)}
+.post-list a{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 8px 15px 2px;color:var(--ink);font-weight:600;text-decoration:none;border-left:2px solid transparent;transition:background .15s,border-color .15s,padding-left .15s}
+.post-list a:hover{background:var(--paper);border-left-color:var(--red);padding-left:12px;text-decoration:none}
+.post-list__title{font-size:16px;line-height:1.45}
+.post-list a:hover .post-list__title{color:var(--red)}
+.post-list__date{flex:0 0 auto;font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 
 /* ---------- FAQ accordion (native <details>) ---------- */
 .faq{display:flex;flex-direction:column;gap:10px;max-width:820px}
