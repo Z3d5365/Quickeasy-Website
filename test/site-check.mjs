@@ -87,12 +87,14 @@ test('B1 no removed menus (Products / Resources)', () =>
   navPages.filter((p) => />Products<|>Resources<|>All articles</.test(p.html))
           .map((p) => 'stale menu item in ' + p.rel));
 
+const enNavPages = navPages.filter((p) => !p.rel.startsWith('th/'));
+
 test('B2 nav has Support submenu + All Blogs', () =>
-  navPages.filter((p) => !(p.html.includes('>Documentation<') && p.html.includes('>Customer Service<') && p.html.includes('>All Blogs<')))
+  enNavPages.filter((p) => !(p.html.includes('>Documentation<') && p.html.includes('>Customer Service<') && p.html.includes('>All Blogs<')))
           .map((p) => 'incomplete new nav in ' + p.rel));
 
 test('B3 footer present, Explore has Support and not Blog', () =>
-  navPages.flatMap((p) => {
+  enNavPages.flatMap((p) => {
     const errs = [];
     if (!p.html.includes('site-footer')) errs.push('no footer: ' + p.rel);
     if (!p.html.includes('<li><a href="/support/">Support</a></li>')) errs.push('no footer Support: ' + p.rel);
@@ -208,8 +210,10 @@ test('F4 documentation page', () => {
   const d = get('documentation/index.html');
   if (!d) return ['documentation/index.html missing'];
   const errs = [];
-  if (count(d.html, /class="doc-mark"/g) !== 3) errs.push('expected 3 product wordmarks');
+  if (count(d.html, /class="doc-(mark|media)"/g) !== 3) errs.push('expected 3 edition cards (doc-mark/doc-media)');
   if (!d.html.includes('/implementation-methodology/')) errs.push('no Implementation Methodology link');
+  for (const img of ['/assets/img/bos-pro.png', '/assets/img/bos-enterprise.jpg'])
+    if (!d.html.includes(img)) errs.push('missing edition image: ' + img);
   return errs;
 });
 
@@ -346,6 +350,68 @@ test('I6 consolidated redirect map: no chains, no dup sources', () => {
   for (const [o] of rows) { if (seen.has(o)) errs.push('duplicate source: ' + o); seen.add(o); sources.add(o); }
   for (const [o, n] of rows) if (sources.has(n)) errs.push(`chained redirect: ${o} -> ${n} (target is itself a source)`);
   return errs;
+});
+
+/* =========================================================================
+   J. Light / dark theme
+   ========================================================================= */
+test('J1 every nav page has a theme toggle', () =>
+  navPages.filter((p) => !p.html.includes('class="theme-toggle"'))
+          .map((p) => 'no theme toggle: ' + p.rel));
+
+test('J2 every page has the theme-init script before main.css', () =>
+  indexPages.flatMap((p) => {
+    const s = p.html.indexOf("localStorage.getItem('theme')");
+    const c = p.html.indexOf('/assets/css/main.css');
+    if (s === -1) return ['no theme-init script: ' + p.rel];
+    if (c === -1 || s > c) return ['init script not before main.css: ' + p.rel];
+    return [];
+  }));
+
+test('J3 main.css defines dark tokens, media fallback and .theme-toggle', () => {
+  const css = read(path.join(ROOT, 'assets/css/main.css'));
+  return ['[data-theme="dark"]', '@media (prefers-color-scheme:dark)', '.theme-toggle', '--bg:']
+    .filter((s) => !css.includes(s)).map((s) => 'missing in main.css: ' + s);
+});
+
+test('J4 main.js has the theme toggle handler', () => {
+  const js = read(path.join(ROOT, 'assets/js/main.js'));
+  return ['theme-toggle', 'data-theme', "localStorage.setItem(\"theme\""]
+    .filter((k) => !js.includes(k)).map((k) => 'missing in main.js: ' + k);
+});
+
+/* =========================================================================
+   K. Thai (i18n) pages
+   ========================================================================= */
+const thPages = indexPages.filter((p) => p.rel === 'th/index.html' || p.rel.startsWith('th/'));
+
+test('K1 Thai pages declare lang="th" and a Thai title', () =>
+  thPages.flatMap((p) => {
+    const errs = [];
+    if (!/<html[^>]*\blang="th"/.test(p.html)) errs.push('lang!=th: ' + p.rel);
+    if (!/[฀-๿]/.test(p.html)) errs.push('no Thai text: ' + p.rel);
+    return errs;
+  }));
+
+test('K2 Thai pages link back to English (lang-toggle)', () =>
+  thPages.filter((p) => {
+    const m = p.html.replace(/\n/g, ' ').match(/class="lang-toggle"[^>]*href="([^"]*)"[^>]*hreflang="en"/);
+    return !m || m[1].startsWith('/th/'); // must point at a non-Thai (English) URL
+  }).map((p) => 'no EN lang-toggle: ' + p.rel));
+
+test('K3 Thai + paired EN pages carry hreflang alternates', () => {
+  const errs = [];
+  for (const p of [...thPages, get('index.html')]) {
+    if (!p) continue;
+    if (!p.html.includes('hreflang="en"') || !p.html.includes('hreflang="th"'))
+      errs.push('missing hreflang pair: ' + p.rel);
+  }
+  return errs;
+});
+
+test('K4 EN home has a Thai language switcher', () => {
+  const h = get('index.html');
+  return h && /class="lang-toggle"[^>]*href="\/th\/"/.test(h.html) ? [] : ['EN home missing ไทย switcher'];
 });
 
 /* =========================================================================

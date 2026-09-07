@@ -2,6 +2,31 @@
 (function () {
   "use strict";
 
+  /* ---------- Theme toggle (light / dark) ---------- */
+  (function () {
+    var btn = document.querySelector(".theme-toggle");
+    var root = document.documentElement;
+    function resolved() {
+      var t = root.getAttribute("data-theme");
+      if (t === "dark" || t === "light") return t;
+      return window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";
+    }
+    function reflect(t) {
+      if (!btn) return;
+      btn.setAttribute("aria-pressed", t === "dark" ? "true" : "false");
+      btn.setAttribute("aria-label", t === "dark" ? "Switch to light theme" : "Switch to dark theme");
+    }
+    reflect(resolved());
+    if (btn) {
+      btn.addEventListener("click", function () {
+        var next = resolved() === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        try { localStorage.setItem("theme", next); } catch (e) {}
+        reflect(next);
+      });
+    }
+  })();
+
   /* ---------- Mobile nav ---------- */
   var toggle = document.querySelector(".nav-toggle");
   if (toggle) {

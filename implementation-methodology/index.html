@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" />
+<script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="/assets/css/main.css" />
 <script src="/assets/js/main.js" defer></script>
 <script type="application/ld+json">
@@ -81,12 +82,17 @@
 <header class="site-header">
   <div class="container site-header__bar">
     <a class="brand" href="/" aria-label="QuickEasy Software home"><img src="/assets/img/logo.png" alt="QuickEasy Software" width="150" height="40" /></a>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
+    <a class="lang-toggle" href="/th/" hreflang="th" lang="th" aria-label="ดูเว็บไซต์ภาษาไทย">ไทย</a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
     <nav class="nav" id="site-nav" aria-label="Main">
-      <ul style="display:contents"><li><a href="/">Home</a></li><li><a href="/pricing/">Pricing</a></li><li><a href="/apps/">Apps</a></li><li class="has-menu"><a href="#" aria-haspopup="true">Blogs</a><ul class="submenu submenu--wide"><li><a href="/blog/#erp-business-systems">ERP &amp; Business Systems</a></li><li><a href="/blog/#production-manufacturing">Production &amp; Manufacturing</a></li><li><a href="/blog/#inventory-procurement">Inventory &amp; Procurement</a></li><li><a href="/blog/#financial-accounting">Financial &amp; Accounting</a></li><li><a href="/blog/#sales-crm-service">Sales, CRM &amp; Service</a></li><li><a href="/blog/#industries-verticals">Industries &amp; Verticals</a></li><li><a href="/blog/#cloud-data-technology">Cloud, Data &amp; Technology</a></li><li><a href="/blog/#business-growth-leadership">Business Growth &amp; Leadership</a></li><li><a href="/blog/">All Blogs</a></li></ul></li><li class="has-menu"><a href="#" aria-haspopup="true" aria-current="page">Support</a><ul class="submenu"><li><a href="/documentation/">Documentation</a></li><li><a href="/support/">Customer Service</a></li></ul></li><li><a href="/about-us/">About</a></li><li><a href="/contact-us/">Contact</a></li></ul>
-      <a class="btn btn--primary btn--sm nav__cta" href="/contact-us/">Book a Demo</a>
+      <ul style="display:contents"><li><a href="/">Home</a></li><li><a href="/pricing/">Pricing</a></li><li><a href="/apps/">Apps</a></li><li class="has-menu"><a href="#" aria-haspopup="true">Blogs</a><ul class="submenu submenu--wide"><li><a href="/blog/#erp-business-systems">ERP &amp; Business Systems</a></li><li><a href="/blog/#production-manufacturing">Production &amp; Manufacturing</a></li><li><a href="/blog/#inventory-procurement">Inventory &amp; Procurement</a></li><li><a href="/blog/#financial-accounting">Financial &amp; Accounting</a></li><li><a href="/blog/#sales-crm-service">Sales, CRM &amp; Service</a></li><li><a href="/blog/#industries-verticals">Industries &amp; Verticals</a></li><li><a href="/blog/#cloud-data-technology">Cloud, Data &amp; Technology</a></li><li><a href="/blog/#business-growth-leadership">Business Growth &amp; Leadership</a></li><li><a href="/blog/">All Blogs</a></li></ul></li><li class="has-menu"><a href="#" aria-haspopup="true" aria-current="page">Support</a><ul class="submenu"><li><a href="/documentation/">Documentation</a></li><li><a href="/support/">Customer Service</a></li></ul></li><li><a href="/about-us/">About</a></li></ul>
+      <a class="btn btn--primary btn--sm nav__cta" href="/contact-us/">Contact us</a>
     </nav>
   </div>
 </header>
@@ -135,17 +141,17 @@
         <h2 class="h2">Our Implementation Methodology</h2>
       </div>
       <div class="faq">
-        <details open>
-          <summary>1. Planning</summary>
+        <div class="method-step">
+          <h3>1. Planning</h3>
           <div class="faq-body"><ul>
             <li><strong>Defining test cases</strong> — what each job role/function requires as a final outcome from the ERP in order to do their job successfully.</li>
             <li><strong>Mapping business processes</strong> — review existing business processes and identify challenges and successes.</li>
             <li><strong>Identifying IT tech specs</strong> — any hardware or IT architecture needed by the business.</li>
             <li><strong>Announcement to business</strong> — project sharing with the organisation.</li>
           </ul></div>
-        </details>
-        <details>
-          <summary>2. Education / Exposure to BOS</summary>
+        </div>
+        <div class="method-step">
+          <h3>2. Education / Exposure to BOS</h3>
           <div class="faq-body">
             <p>A comprehensive overview of the full functionality of the system, including the predefined business processes that will improve efficiency in every area of your business.</p>
             <ul>
@@ -154,9 +160,9 @@
               <li>Working through test cases and enabling users to become more familiar with the system.</li>
             </ul>
           </div>
-        </details>
-        <details>
-          <summary>3. Discovery / Setup / Configuration</summary>
+        </div>
+        <div class="method-step">
+          <h3>3. Discovery / Setup / Configuration</h3>
           <div class="faq-body">
             <ul>
               <li>BOS agent gathers the requirements of a particular business process.</li>
@@ -172,9 +178,9 @@
             </ul>
             <p>Note: a completed ERP software configuration is only complete after the User Acceptance Testing (UAT) phase.</p>
           </div>
-        </details>
-        <details>
-          <summary>4. Data Conversion</summary>
+        </div>
+        <div class="method-step">
+          <h3>4. Data Conversion</h3>
           <div class="faq-body">
             <p>For a successful data conversion phase, the following needs to be in place:</p>
             <ul>
@@ -188,17 +194,17 @@
               <li><strong>History</strong> — if upgrading from another system, QuickEasy can import your old quotations and orders as a searchable report.</li>
             </ul>
           </div>
-        </details>
-        <details>
-          <summary>5. Documentation</summary>
+        </div>
+        <div class="method-step">
+          <h3>5. Documentation</h3>
           <div class="faq-body"><p>Detailed documentation is created around end-user transactions and technical specifications of the system. This is unique to each client, providing a platform for ongoing training and support for users.</p></div>
-        </details>
-        <details>
-          <summary>6. Prototype Review / Exposure to BOS</summary>
+        </div>
+        <div class="method-step">
+          <h3>6. Prototype Review / Exposure to BOS</h3>
           <div class="faq-body"><p>The new system and its full functionality are presented to the implementation team via prototype demonstration workshops. Adjustments to the system will only be made if issues have been identified.</p></div>
-        </details>
-        <details>
-          <summary>7. Conference Room Pilot</summary>
+        </div>
+        <div class="method-step">
+          <h3>7. Conference Room Pilot</h3>
           <div class="faq-body">
             <p>Clients are taken through several Conference Room Pilots (CRP) while working through their respective test cases to familiarise themselves with the system. Any large software implementation will consist of three CRPs.</p>
             <ul>
@@ -210,9 +216,9 @@
               <li>Final CRP — a simulated "go-live".</li>
             </ul>
           </div>
-        </details>
-        <details>
-          <summary>8. UAT (User Acceptance Testing)</summary>
+        </div>
+        <div class="method-step">
+          <h3>8. UAT (User Acceptance Testing)</h3>
           <div class="faq-body">
             <p>The thorough end-to-end testing process of the software, conducted with every business process from every function within the company. Issues identified during UAT are either:</p>
             <ul>
@@ -220,9 +226,9 @@
               <li>Prioritised as additional development after go-live — the preferred practice.</li>
             </ul>
           </div>
-        </details>
-        <details>
-          <summary>9. Cut-over Activities</summary>
+        </div>
+        <div class="method-step">
+          <h3>9. Cut-over Activities</h3>
           <div class="faq-body">
             <p>Implementation teams plan the cut-over processes and schedule training sessions for end-users on the new system. These include:</p>
             <ul>
@@ -237,9 +243,9 @@
               <li>Cutover to QuickEasy BOS.</li>
             </ul>
           </div>
-        </details>
-        <details>
-          <summary>10. Go-Live Support</summary>
+        </div>
+        <div class="method-step">
+          <h3>10. Go-Live Support</h3>
           <div class="faq-body">
             <p>On completion of a successful installation and implementation, all clients are provided with:</p>
             <ul>
@@ -248,9 +254,9 @@
               <li>Helpdesk query support.</li>
             </ul>
           </div>
-        </details>
-        <details>
-          <summary>11. Post Mortem: Project Closure and Lessons Learned</summary>
+        </div>
+        <div class="method-step">
+          <h3>11. Post Mortem: Project Closure and Lessons Learned</h3>
           <div class="faq-body">
             <p>Once the software is fully launched, BOS agents complete a final checklist covering:</p>
             <ul>
@@ -262,7 +268,7 @@
               <li>BOS support continued post go-live.</li>
             </ul>
           </div>
-        </details>
+        </div>
       </div>
       <div class="btn-row" style="margin-top:32px"><a class="btn btn--ghost" href="/bos-erp/">Discover BOS &rarr;</a></div>
     </div>

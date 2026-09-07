@@ -44,4 +44,3 @@
 /author/qeadmin/               ->  /blog/                # WordPress author archive
 /bos-er/                       ->  /bos-erp/             # typo/alias stub
 /contact/                      ->  /contact-us/          # alias stub
-/th/contact-us/                ->  /contact-us/          # legacy Thai contact mirror

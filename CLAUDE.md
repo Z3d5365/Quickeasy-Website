@@ -77,6 +77,39 @@ This is a same-domain WordPress→static migration of an already-ranking site
 - Every page has a self-referencing canonical (non-www). Don't add `Disallow: /`
   to `robots.txt` — a staging block leaking to production deindexes the site.
 
+## Theming (light / dark)
+
+- Token-based: `:root` in `main.css` holds the **light** palette; a dark palette
+  redefines the same tokens under `:root[data-theme="dark"]` (plus a
+  `@media (prefers-color-scheme:dark)` no-JS fallback). Neutral-grey dark theme.
+- `data-theme` is set on `<html>` **pre-paint** by a tiny inline `<script>` in
+  every page's `<head>` (before `main.css`) — it reads `localStorage.theme`, else
+  falls back to the OS preference. A `.theme-toggle` button in the header (added
+  site-wide by the sweep) flips light↔dark and persists the choice (`main.js`).
+- **New components must use the tokens** (`--bg`, `--surface`, `--paper`, `--ink`,
+  `--body`, `--line`, `--red`…) — never hardcode light colours, or they won't
+  theme. The header/footer button + init script are duplicated per page, so change
+  them with the Node sweep, not by hand.
+- Dark logo: `assets/img/logo-dark.png` (swap wired in `main.css`); until supplied,
+  a light chip sits behind the header logo in dark mode.
+
+## Internationalisation (Thai)
+
+- Thai lives under a parallel **`/th/`** URL tree (e.g. `/th/`, `/th/pricing/`),
+  each page `<html lang="th">` with `<link rel="alternate" hreflang="en|th|x-default">`
+  pairing it to its English counterpart. English pages carry the reciprocal
+  hreflang. Both are in `sitemap.xml`.
+- A header **ไทย / EN** `.lang-toggle` link (next to the theme toggle) switches
+  between a page and its translated counterpart — a plain `<a>`, no JS.
+- Thai pages load **Noto Sans Thai** (added to their Google Fonts link) and
+  `html[lang="th"]` sets `--font` to it; Latin falls back to Open Sans.
+- **Status:** first pass = the homepage. Nav/footer links on Thai pages point to
+  English pages until each is translated; translate a page, drop it at `/th/<path>/`,
+  then repoint. **Blog posts and legal pages are excluded** (legal needs
+  professional translation). Thai marketing copy is a machine-drafted first pass —
+  **flag for native-speaker review** before launch. Thai contact: QuickEasy Asia,
+  nim.pattraporn@quickeasysoftware.com, +66 (0) 92 849 4555.
+
 ## Conventions
 
 - Folder path = live URL (static site served at domain root).

@@ -7,17 +7,18 @@
   --red:#26241f; --red-dk:#000000; --red-wash:#eeece8;
   --graphite:#6b6f76;
   --ink:#2d2926; --ink-2:#4a4744; --body:#514d4a; --muted:#8a857f;
-  --paper:#f4f3f1; --surface:#fff; --line:#e5e3e0; --line-2:#efedea;
+  --bg:#fff; --paper:#f4f3f1; --surface:#fff; --line:#e5e3e0; --line-2:#efedea;
   --radius:6px; --maxw:1180px;
   --shadow-sm:0 1px 2px rgba(45,41,38,.05);
   --shadow:0 1px 2px rgba(45,41,38,.05),0 14px 34px -22px rgba(45,41,38,.30);
   --header-h:74px;
   --font:"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
+html[lang="th"]{--font:"Noto Sans Thai","Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;font-family:var(--font);font-size:16px;line-height:1.65;color:var(--body);background:var(--surface);-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:var(--font);font-size:16px;line-height:1.65;color:var(--body);background:var(--bg);-webkit-font-smoothing:antialiased}
 img{max-width:100%;height:auto;display:block}
 a{color:var(--red);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -138,6 +139,8 @@ p{margin:0 0 1em}
 .doc-card{display:flex;flex-direction:column;text-align:left;transition:border-color .2s,box-shadow .2s,transform .1s}
 .doc-card:hover{text-decoration:none;border-color:var(--ink);box-shadow:var(--shadow);transform:translateY(-2px)}
 .doc-mark{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;height:108px;margin-bottom:20px;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper)}
+.doc-media{height:108px;margin-bottom:20px;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);overflow:hidden}
+.doc-media img{display:block;width:100%;height:100%;object-fit:cover}
 .doc-mark b{font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1}
 .doc-mark span{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--graphite)}
 .doc-card h3{margin-bottom:8px}
@@ -239,6 +242,9 @@ tbody tr:last-child td{border-bottom:0}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"";position:absolute;right:20px;top:50%;width:9px;height:9px;border-right:2px solid var(--red);border-bottom:2px solid var(--red);transform:translateY(-65%) rotate(45deg);transition:transform .18s}
 .faq details[open] summary::after{transform:translateY(-35%) rotate(-135deg)}
+.faq .method-step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.faq .method-step>h3{margin:0;padding:14px 20px;font-size:16px;font-weight:700;color:var(--ink);background:var(--paper);border-bottom:1px solid var(--line)}
+.faq .method-step .faq-body{padding:16px 20px 18px}
 .faq .faq-body{padding:0 20px 18px;color:var(--body)}
 .faq .faq-body p{margin:0 0 .9em}
 .faq .faq-body p:last-child{margin-bottom:0}
@@ -309,6 +315,7 @@ code{background:var(--paper);color:var(--red-dk);padding:.15em .4em;border-radiu
 
 /* ---------- prose (article body) ---------- */
 .prose{max-width:760px}
+.prose>:first-child{margin-top:0}
 .prose h2{font-size:26px;margin:1.6em 0 .5em}
 .prose h3{font-size:20px;margin:1.4em 0 .4em}
 .prose p{margin:0 0 1.1em;color:var(--body)}
@@ -322,3 +329,60 @@ code{background:var(--paper);color:var(--red-dk);padding:.15em .4em;border-radiu
 .prose dl dt{font-weight:700;color:var(--ink);margin:.7em 0 .1em}
 .prose dl dt:first-child{margin-top:0}
 .prose dl dd{margin:0 0 0 0;color:var(--body)}
+
+/* =========================================================================
+   Dark mode — token-based (light stays on :root). <html data-theme> is set
+   pre-paint by an inline head script: stored choice, else OS preference.
+   ========================================================================= */
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;background:none;border:1px solid var(--line);border-radius:var(--radius);padding:8px;color:var(--ink-2);cursor:pointer;transition:color .2s,border-color .2s}
+.theme-toggle:hover{color:var(--red);border-color:var(--ink)}
+.theme-toggle svg{width:20px;height:20px;display:block}
+.theme-toggle .icon-sun{display:none}
+.lang-toggle{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);color:var(--ink-2);font-weight:700;font-size:13px;line-height:1;text-decoration:none;white-space:nowrap}
+.lang-toggle:hover{color:var(--red);border-color:var(--ink);text-decoration:none}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:none}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:inline}
+
+/* neutral-grey dark palette (matches Kamnod) */
+:root[data-theme="dark"]{
+  --bg:#0a0a0a; --surface:#161616; --paper:#101010;
+  --ink:#f7f7f7; --ink-2:#d4d4d4; --body:#cfcfcf; --muted:#8f8f8f; --graphite:#a3a3a3;
+  --line:#262626; --line-2:#1f1f1f;
+  --red:#ededea; --red-dk:#ffffff; --red-wash:rgba(255,255,255,.08);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px -22px rgba(0,0,0,.7);
+}
+/* no-JS fallback: flip tokens when the OS asks and no explicit choice is set */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme]){
+    --bg:#0a0a0a; --surface:#161616; --paper:#101010;
+    --ink:#f7f7f7; --ink-2:#d4d4d4; --body:#cfcfcf; --muted:#8f8f8f; --graphite:#a3a3a3;
+    --line:#262626; --line-2:#1f1f1f;
+    --red:#ededea; --red-dk:#ffffff; --red-wash:rgba(255,255,255,.08);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px -22px rgba(0,0,0,.7);
+  }
+}
+
+/* dark overrides for hardcoded-light / accent-conflated spots */
+:root[data-theme="dark"] ::selection{background:#f7f7f7;color:#0a0a0a}
+:root[data-theme="dark"] .btn--primary{background:var(--red);color:#0a0a0a;border-color:var(--red)}
+:root[data-theme="dark"] .btn--primary:hover{background:var(--red-dk);border-color:var(--red-dk);color:#0a0a0a}
+:root[data-theme="dark"] .btn--ghost{color:var(--ink);border-color:var(--ink)}
+:root[data-theme="dark"] .btn--ghost:hover{background:var(--ink);color:#0a0a0a}
+:root[data-theme="dark"] .hero{background:linear-gradient(180deg,#0d0d0d,var(--paper))}
+/* warm accent bands become elevated neutral panels in dark */
+:root[data-theme="dark"] .section--ink{background:var(--surface);color:var(--body);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+:root[data-theme="dark"] .section--ink h2,:root[data-theme="dark"] .section--ink h3{color:var(--ink)}
+:root[data-theme="dark"] .section--ink .eyebrow{color:var(--muted)}
+:root[data-theme="dark"] .section--ink .lead{color:var(--body)}
+:root[data-theme="dark"] .section--ink .btn--primary{background:var(--red);color:#0a0a0a;border-color:var(--red)}
+:root[data-theme="dark"] .section--ink .btn--primary:hover{background:var(--red-dk);border-color:var(--red-dk);color:#0a0a0a}
+:root[data-theme="dark"] .section--ink .btn--ghost{color:var(--ink);border-color:var(--ink)}
+:root[data-theme="dark"] .section--ink .btn--ghost:hover{background:var(--ink);color:#0a0a0a}
+:root[data-theme="dark"] .section--ink .form-group label{color:var(--ink)}
+:root[data-theme="dark"] .nav a.nav__cta{color:#0a0a0a}
+/* logo: legible light chip behind the header mark in dark (footer already chips).
+   When assets/img/logo-dark.png is supplied, replace the chip with:
+   :root[data-theme="dark"] .brand img,:root[data-theme="dark"] .footer-brand img{content:url('/assets/img/logo-dark.png')} */
+:root[data-theme="dark"] .brand img{background:#f4f3f1;border-radius:6px;padding:4px 8px}
