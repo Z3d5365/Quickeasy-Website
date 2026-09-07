@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>วิธีการนำระบบไปใช้งานของ QuickEasy - QuickEasy Software</title>
+<meta name="description" content="ผู้ให้บริการ ERP ต้องมีวิธีการนำระบบไปใช้งานที่ผ่านการทดสอบเพื่อการติดตั้ง ERP ที่สำเร็จ ค้นพบวิธีการนำ BOS ไปใช้งานของ QuickEasy" />
+<link rel="canonical" href="https://quickeasysoftware.com/th/implementation-methodology/" />
+<link rel="alternate" hreflang="en" href="https://quickeasysoftware.com/implementation-methodology/" />
+<link rel="alternate" hreflang="th" href="https://quickeasysoftware.com/th/implementation-methodology/" />
+<link rel="alternate" hreflang="x-default" href="https://quickeasysoftware.com/implementation-methodology/" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="th_TH" />
+<meta property="og:title" content="วิธีการนำระบบไปใช้งานของ QuickEasy - QuickEasy Software" />
+<meta property="og:description" content="ผู้ให้บริการ ERP ต้องมีวิธีการนำระบบไปใช้งานที่ผ่านการทดสอบเพื่อการติดตั้ง ERP ที่สำเร็จ ค้นพบวิธีการนำ BOS ไปใช้งานของ QuickEasy" />
+<meta property="og:url" content="https://quickeasysoftware.com/th/implementation-methodology/" />
+<meta property="og:image" content="https://quickeasysoftware.com/assets/img/hero-erp.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/assets/img/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Noto+Sans+Thai:wght@400;600;700;800&display=swap" />
+<script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/css/main.css" />
+<script src="/assets/js/main.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": "https://quickeasysoftware.com/#organization", "name": "QuickEasy Software", "url": "https://quickeasysoftware.com/", "logo": "https://quickeasysoftware.com/assets/img/logo.png", "foundingDate": "1998" },
+    { "@type": "BreadcrumbList", "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "หน้าแรก", "item": "https://quickeasysoftware.com/th/" },
+      { "@type": "ListItem", "position": 2, "name": "วิธีการนำระบบไปใช้งาน", "item": "https://quickeasysoftware.com/th/implementation-methodology/" }
+    ] }
+  ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a class="brand" href="/th/" aria-label="QuickEasy Software หน้าแรก"><img src="/assets/img/logo.png" alt="QuickEasy Software" width="150" height="40" /></a>
+    <button class="theme-toggle" type="button" aria-label="สลับธีมมืด" aria-pressed="false">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
+    <a class="lang-toggle" href="/implementation-methodology/" hreflang="en" lang="en" aria-label="View in English">EN</a>
+    <button class="nav-toggle" aria-label="เมนู" aria-expanded="false" aria-controls="site-nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="เมนูหลัก">
+      <ul style="display:contents"><li><a href="/th/">หน้าแรก</a></li><li><a href="/th/pricing/">ราคา</a></li><li><a href="/th/apps/">แอป</a></li><li class="has-menu"><a href="#" aria-haspopup="true">บล็อก</a><ul class="submenu submenu--wide"><li><a href="/blog/#erp-business-systems">ERP และระบบธุรกิจ</a></li><li><a href="/blog/#production-manufacturing">การผลิต</a></li><li><a href="/blog/#inventory-procurement">สินค้าคงคลังและการจัดซื้อ</a></li><li><a href="/blog/#financial-accounting">การเงินและบัญชี</a></li><li><a href="/blog/#sales-crm-service">การขาย CRM และบริการ</a></li><li><a href="/blog/#industries-verticals">อุตสาหกรรม</a></li><li><a href="/blog/#cloud-data-technology">คลาวด์ ข้อมูล และเทคโนโลยี</a></li><li><a href="/blog/#business-growth-leadership">การเติบโตและภาวะผู้นำ</a></li><li><a href="/blog/">บล็อกทั้งหมด</a></li></ul></li><li class="has-menu"><a href="#" aria-haspopup="true">ฝ่ายสนับสนุน</a><ul class="submenu"><li><a href="/th/documentation/">เอกสารประกอบ</a></li><li><a href="/th/support/">ฝ่ายบริการลูกค้า</a></li></ul></li><li><a href="/th/about-us/">เกี่ยวกับเรา</a></li></ul>
+      <a class="btn btn--primary btn--sm nav__cta" href="/th/contact-us/">ติดต่อเรา</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+  <section class="hero hero--sub">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">แนวทางที่ผ่านการทดสอบและเป็นระบบ</p>
+        <h1>วิธีการนำระบบไปใช้งานของ QuickEasy</h1>
+        <p>วิธีการนำ BOS ERP ไปใช้งานของเราคือแนวทางที่ผ่านการทดสอบและเป็นระบบ เพื่อประหยัดเวลาและคุมงบประมาณโดยรบกวนการทำงานน้อยที่สุด</p>
+        <div class="btn-row btn-row--center"><a class="btn btn--primary" href="/th/contact-us/">จองเดโม</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--2">
+        <div class="card">
+          <h3>สิ่งที่คุณจะได้รับ</h3>
+          <ul class="check-list">
+            <li>คำแนะนำตลอดกระบวนการติดตั้งซอฟต์แวร์</li>
+            <li>เอกสารเกี่ยวกับขั้นตอนการทำงานใหม่ของคุณ</li>
+            <li>แดชบอร์ดและตัวชี้วัดที่วัดความคืบหน้าของการติดตั้ง</li>
+            <li>บทเรียนการใช้งาน BOS ในบทบาทและหน้าที่ต่าง ๆ ของธุรกิจคุณ</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>เป้าหมายที่กำหนดไว้สำหรับทุกการนำระบบไปใช้งาน</h3>
+          <ul class="check-list">
+            <li>มอบโครงสร้างและแนวทางการสื่อสาร</li>
+            <li>กำหนดขอบเขตเพื่อให้การพัฒนาและการนำไปใช้งานสำเร็จ</li>
+            <li>ลดความเสี่ยงและเพิ่มความคาดการณ์ได้และการทำซ้ำได้ของโครงการให้สูงสุด</li>
+            <li>ส่งเสริมการนำระบบ ERP ไปใช้งานในธุรกิจของคุณอย่างประสบความสำเร็จ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper" id="methodology">
+    <div class="container">
+      <div class="sec-head center">
+        <p class="eyebrow">ทีละขั้นตอน</p>
+        <h2 class="h2">วิธีการนำระบบไปใช้งานของเรา</h2>
+      </div>
+      <div class="faq">
+        <div class="method-step">
+          <h3>1. การวางแผน</h3>
+          <div class="faq-body"><ul>
+            <li><strong>กำหนดกรณีทดสอบ</strong> — สิ่งที่แต่ละบทบาท/หน้าที่งานต้องการเป็นผลลัพธ์สุดท้ายจาก ERP เพื่อให้ทำงานได้สำเร็จ</li>
+            <li><strong>ทำแผนที่กระบวนการทางธุรกิจ</strong> — ทบทวนกระบวนการทางธุรกิจที่มีอยู่ และระบุความท้าทายและความสำเร็จ</li>
+            <li><strong>ระบุข้อกำหนดทางเทคนิคด้านไอที</strong> — ฮาร์ดแวร์หรือสถาปัตยกรรมไอทีใด ๆ ที่ธุรกิจต้องการ</li>
+            <li><strong>ประกาศให้องค์กรทราบ</strong> — การแบ่งปันโครงการกับองค์กร</li>
+          </ul></div>
+        </div>
+        <div class="method-step">
+          <h3>2. การเรียนรู้ / การทำความรู้จักกับ BOS</h3>
+          <div class="faq-body">
+            <p>ภาพรวมที่ครอบคลุมของฟังก์ชันทั้งหมดของระบบ รวมถึงกระบวนการทางธุรกิจที่กำหนดไว้ล่วงหน้าซึ่งจะเพิ่มประสิทธิภาพในทุกด้านของธุรกิจคุณ</p>
+            <ul>
+              <li>บทเรียนเกี่ยวกับสิ่งที่ BOS ทำได้และกระบวนการทางธุรกิจ เช่น วิธีขจัดคอขวดในกระบวนการและบุคลากร</li>
+              <li>นำแนวคิดเชิงกลยุทธ์มาใช้เพื่อสร้างกำไรมากขึ้น</li>
+              <li>ทำงานผ่านกรณีทดสอบและช่วยให้ผู้ใช้คุ้นเคยกับระบบมากขึ้น</li>
+            </ul>
+          </div>
+        </div>
+        <div class="method-step">
+          <h3>3. การค้นหา / การตั้งค่า / การกำหนดค่า</h3>
+          <div class="faq-body">
+            <ul>
+              <li>ตัวแทน BOS รวบรวมความต้องการของกระบวนการทางธุรกิจนั้น ๆ</li>
+              <li>ตัวแทนระบุขั้นตอนที่อาจตัดออกได้เพื่อปรับปรุงกระบวนการปัจจุบัน</li>
+              <li>ระบบถูกกำหนดค่าและปรับแต่งให้ตรงกับความต้องการทางธุรกิจของคุณ</li>
+            </ul>
+            <p><strong>วัตถุประสงค์:</strong></p>
+            <ul>
+              <li>การนำซอฟต์แวร์ไปใช้งานของผู้ใช้ที่สูงขึ้น</li>
+              <li>ความสามารถในการทำงานให้เสร็จเร็วขึ้นและใช้ความพยายามน้อยลง</li>
+              <li>ทบทวนกระบวนการทางธุรกิจปัจจุบัน</li>
+              <li>ตัวแทน BOS กำหนดค่า/ออกแบบระบบ ERP ให้ทำธุรกรรมสอดคล้องกับกระบวนการเหล่านี้</li>
+            </ul>
+            <p>หมายเหตุ: การกำหนดค่าซอฟต์แวร์ ERP จะเสร็จสมบูรณ์ก็ต่อเมื่อผ่านขั้นตอนการทดสอบการยอมรับของผู้ใช้ (UAT) แล้ว</p>
+          </div>
+        </div>
+        <div class="method-step">
+          <h3>4. การแปลงข้อมูล</h3>
+          <div class="faq-body">
+            <p>เพื่อให้ขั้นตอนการแปลงข้อมูลสำเร็จ จำเป็นต้องมีสิ่งต่อไปนี้:</p>
+            <ul>
+              <li><strong>บริษัท</strong> — ข้อมูลติดต่อ เอกสารด้านธุรการ และรายละเอียดพนักงานทั้งหมดต้องพร้อมใช้งาน</li>
+              <li><strong>ลูกค้า/ซัพพลายเออร์</strong> — QuickEasy BOS สามารถนำเข้ารายชื่อลูกค้าและซัพพลายเออร์จากโปรแกรมประเมินราคาหรือบัญชีที่คุณใช้อยู่ได้ หากคุณยังไม่ได้ใช้โปรแกรมใด จะต้องจัดเตรียมรายชื่อนี้ให้</li>
+              <li><strong>ศูนย์ต้นทุน</strong> — บริษัทต้องแบ่งออกเป็นศูนย์ต้นทุนการผลิตตามหลักเหตุผล รวมถึงต้นทุนทางตรงและชั่วโมงทำงานที่มีประสิทธิผลของแต่ละศูนย์</li>
+              <li><strong>วัสดุ</strong> — ต้องจัดเตรียมราคาวัสดุตามรายการ (แค็ตตาล็อกซัพพลายเออร์) และ/หรือโครงสร้างส่วนลด บริษัทงานพิมพ์สามารถนำเข้ารายการราคากระดาษปัจจุบันจากผู้จำหน่ายกระดาษในแอฟริกาใต้ทุกราย</li>
+              <li><strong>บริการ</strong> — ต้องระบุบริการภายในและบริการที่จ้างภายนอกทั้งหมดที่ใช้</li>
+              <li><strong>เครื่องจักรการผลิต</strong> — ต้องจัดเตรียมรายการเครื่องจักรและเครื่องมือการผลิตมาตรฐานที่ใช้</li>
+              <li><strong>เทมเพลต</strong> — QuickEasy จะปรับแต่งเทมเพลตเอกสารทั้งหมดด้วยหัวและท้ายกระดาษสีเต็มรูปแบบจากอาร์ตเวิร์กที่คุณจัดเตรียมให้</li>
+              <li><strong>ประวัติ</strong> — หากอัปเกรดจากระบบอื่น QuickEasy สามารถนำเข้าใบเสนอราคาและคำสั่งซื้อเก่าของคุณเป็นรายงานที่ค้นหาได้</li>
+            </ul>
+          </div>
+        </div>
+        <div class="method-step">
+          <h3>5. การจัดทำเอกสาร</h3>
+          <div class="faq-body"><p>มีการจัดทำเอกสารโดยละเอียดเกี่ยวกับธุรกรรมของผู้ใช้ปลายทางและข้อกำหนดทางเทคนิคของระบบ ซึ่งเป็นเฉพาะสำหรับลูกค้าแต่ละราย เพื่อเป็นแพลตฟอร์มสำหรับการฝึกอบรมและการสนับสนุนผู้ใช้อย่างต่อเนื่อง</p></div>
+        </div>
+        <div class="method-step">
+          <h3>6. การทบทวนต้นแบบ / การทำความรู้จักกับ BOS</h3>
+          <div class="faq-body"><p>ระบบใหม่และฟังก์ชันทั้งหมดจะถูกนำเสนอต่อทีมนำระบบไปใช้งานผ่านเวิร์กช็อปสาธิตต้นแบบ การปรับเปลี่ยนระบบจะทำก็ต่อเมื่อพบปัญหาเท่านั้น</p></div>
+        </div>
+        <div class="method-step">
+          <h3>7. การทดสอบนำร่องในห้องประชุม (Conference Room Pilot)</h3>
+          <div class="faq-body">
+            <p>ลูกค้าจะได้รับการนำผ่านการทดสอบนำร่องในห้องประชุม (CRP) หลายครั้ง ในขณะที่ทำงานผ่านกรณีทดสอบของตนเพื่อทำความคุ้นเคยกับระบบ การนำระบบซอฟต์แวร์ขนาดใหญ่ไปใช้งานใด ๆ จะประกอบด้วย CRP สามครั้ง</p>
+            <ul>
+              <li>CRP ครั้งแรก — การอภิปรายเกี่ยวกับกระบวนการทางธุรกิจแต่ละอย่างและวิธีการปรับให้อยู่ในซอฟต์แวร์ มีการสาธิตกระบวนการในซอฟต์แวร์ใหม่</li>
+              <li>ผู้ใช้จะได้รับอนุญาตให้ทำงานให้เสร็จด้วยตนเอง</li>
+              <li>ช่องว่างในฟังก์ชัน ข้อบกพร่องของซอฟต์แวร์ หรือปัญหาการใช้งานที่สำคัญทั้งหมดจะถูกทำเครื่องหมายไว้</li>
+              <li>การกำหนดค่าซอฟต์แวร์ครั้งแรก — ขึ้นอยู่กับสิ่งที่พบใน CRP ครั้งที่ 1</li>
+              <li>CRP ครั้งที่ 2 และ 3 และการกำหนดค่าซอฟต์แวร์ครั้งที่ 2 และ 3 — ทำซ้ำตามข้างต้น</li>
+              <li>CRP ครั้งสุดท้าย — การจำลอง "การเปิดใช้งานจริง"</li>
+            </ul>
+          </div>
+        </div>
+        <div class="method-step">
+          <h3>8. UAT (การทดสอบการยอมรับของผู้ใช้)</h3>
+          <div class="faq-body">
+            <p>กระบวนการทดสอบซอฟต์แวร์แบบครบวงจรอย่างละเอียด ดำเนินการกับทุกกระบวนการทางธุรกิจจากทุกหน้าที่ภายในบริษัท ปัญหาที่พบระหว่าง UAT จะเป็นอย่างใดอย่างหนึ่งดังนี้:</p>
+            <ul>
+              <li>รวมอยู่ในขอบเขตโครงการเดิม ซึ่งส่งผลต่องบประมาณและต้นทุนการพัฒนา หรือ</li>
+              <li>จัดลำดับความสำคัญเป็นการพัฒนาเพิ่มเติมหลังการเปิดใช้งานจริง — เป็นแนวทางที่แนะนำ</li>
+            </ul>
+          </div>
+        </div>
+        <div class="method-step">
+          <h3>9. กิจกรรมการเปลี่ยนผ่านระบบ (Cut-over)</h3>
+          <div class="faq-body">
+            <p>ทีมนำระบบไปใช้งานวางแผนกระบวนการเปลี่ยนผ่านและจัดตารางการฝึกอบรมสำหรับผู้ใช้ปลายทางเกี่ยวกับระบบใหม่ ซึ่งรวมถึง:</p>
+            <ul>
+              <li>การทดสอบ/ใบรับรองความพร้อม เพื่อให้แน่ใจว่าผู้ใช้สามารถทำกรณีทดสอบแต่ละอย่างได้สำเร็จโดยใช้ระบบใหม่</li>
+              <li>การฝึกอบรมผู้ใช้ปลายทางครั้งสุดท้ายสำหรับผู้ใช้ทุกคนที่ต้องใช้ ERP</li>
+              <li>กำหนดวันที่สำหรับธุรกรรมสุดท้ายที่จะเกิดขึ้นในระบบเดิม</li>
+              <li>ขั้นตอนการแปลงข้อมูล</li>
+              <li>การทบทวนไปต่อ/ไม่ไปต่อ และการลงนามอนุมัติ</li>
+              <li>การปิดระบบเดิมครั้งสุดท้าย</li>
+              <li>การลงนามอนุมัติการย้ายข้อมูลหลัก</li>
+              <li>การรับยอดคงเหลือและการปรับยอดระบบให้ถูกต้อง</li>
+              <li>การเปลี่ยนผ่านสู่ QuickEasy BOS</li>
+            </ul>
+          </div>
+        </div>
+        <div class="method-step">
+          <h3>10. การสนับสนุนหลังเปิดใช้งานจริง</h3>
+          <div class="faq-body">
+            <p>เมื่อการติดตั้งและการนำระบบไปใช้งานสำเร็จ ลูกค้าทุกรายจะได้รับ:</p>
+            <ul>
+              <li>การสนับสนุนระบบและการอัปเกรด</li>
+              <li>เอกสารออนไลน์</li>
+              <li>การสนับสนุนสอบถามผ่านทีมช่วยเหลือ (Helpdesk)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="method-step">
+          <h3>11. การสรุปบทเรียน: การปิดโครงการและบทเรียนที่ได้รับ</h3>
+          <div class="faq-body">
+            <p>เมื่อซอฟต์แวร์เปิดใช้งานเต็มรูปแบบแล้ว ตัวแทน BOS จะทำรายการตรวจสอบสุดท้ายที่ครอบคลุม:</p>
+            <ul>
+              <li>กรณีทดสอบทั้งหมดได้รับการยอมรับและลงนามโดยลูกค้า</li>
+              <li>กระบวนการและรายงานทางการเงินทั้งหมดเสร็จสมบูรณ์</li>
+              <li>การประกาศการเสร็จสิ้นของโครงการ</li>
+              <li>การจัดทำและจัดเก็บเอกสารให้เสร็จสมบูรณ์</li>
+              <li>ความคิดเห็นจากลูกค้าผ่านแบบสอบถามออนไลน์</li>
+              <li>การสนับสนุน BOS ที่ดำเนินต่อไปหลังเปิดใช้งานจริง</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:32px"><a class="btn btn--ghost" href="/th/bos-erp/">ค้นพบ BOS &rarr;</a></div>
+    </div>
+  </section>
+
+  <section class="section section--ink" id="contactimplementation">
+    <div class="container">
+      <div class="sec-head center">
+        <p class="eyebrow">ค้นหาว่า QuickEasy BOS ทำอะไรให้ธุรกิจของคุณได้บ้าง</p>
+        <h2 class="h2">นัดหมายปรึกษาฟรีหรือสอบถามเกี่ยวกับวิธีการนำระบบไปใช้งานของเรา</h2>
+      </div>
+      <form class="contact-form" style="margin:0 auto" novalidate>
+        <div class="form-honeypot" aria-hidden="true">
+          <label for="hp-field-impl">เว้นช่องนี้ว่างไว้</label>
+          <input type="text" id="hp-field-impl" name="hp_field" tabindex="-1" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="name-impl">ชื่อ-นามสกุล</label>
+          <input type="text" id="name-impl" name="name" placeholder="ชื่อ-นามสกุล" required />
+        </div>
+        <div class="form-group">
+          <label for="email-impl">อีเมล</label>
+          <input type="email" id="email-impl" name="email" placeholder="อีเมล" required />
+        </div>
+        <div class="form-group">
+          <label for="phone-impl">เบอร์โทรศัพท์</label>
+          <input type="tel" id="phone-impl" name="phone" placeholder="เบอร์โทรศัพท์" />
+        </div>
+        <div class="form-group">
+          <label for="message-impl">ชื่อบริษัท; ที่ตั้ง; ลักษณะธุรกิจ; ความต้องการด้าน ERP</label>
+          <textarea id="message-impl" name="message" placeholder="ชื่อบริษัท; ที่ตั้ง; ลักษณะธุรกิจ; ความต้องการด้าน ERP" required></textarea>
+        </div>
+        <div class="btn-row"><button type="submit" class="btn btn--primary">ส่ง</button></div>
+        <div class="form-status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <img src="/assets/img/logo.png" alt="QuickEasy Software" />
+        <p>ซอฟต์แวร์บริหารธุรกิจและ ERP ครบวงจรสำหรับธุรกิจที่กำลังเติบโต — สร้างระบบธุรกิจมาตั้งแต่ปี 1998</p>
+        <p><a href="mailto:nim.pattraporn@quickeasysoftware.com">nim.pattraporn@quickeasysoftware.com</a><br>+66 (0) 92 849 4555</p>
+      </div>
+      <div class="footer-col">
+        <h4>สำรวจ</h4>
+        <ul>
+          <li><a href="/th/documentation/">เอกสารประกอบ</a></li>
+          <li><a href="/th/pricing/">ราคา</a></li>
+          <li><a href="/th/apps/">แอป</a></li>
+          <li><a href="/th/about-us/">เกี่ยวกับเรา</a></li>
+          <li><a href="/th/support/">ฝ่ายสนับสนุน</a></li>
+          <li><a href="/th/contact-us/">ติดต่อเรา</a></li>
+          <li><a href="/th/faq/">คำถามที่พบบ่อย</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ภูมิภาค</h4>
+        <ul>
+          <li><a href="/th/south-africa/">แอฟริกาใต้</a></li>
+          <li><a href="/th/eastern-europe/">ยุโรปตะวันออก</a></li>
+          <li><a href="/th/middle-east/">ตะวันออกกลาง</a></li>
+          <li><a href="/thailand/">ประเทศไทย</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ข้อกำหนด</h4>
+        <ul>
+          <li><a href="/website-policy/">ข้อกำหนดและความเป็นส่วนตัวของเว็บไซต์</a></li>
+          <li><a href="/software-policy/">ข้อกำหนดการใช้ซอฟต์แวร์</a></li>
+          <li><a href="/popia-policy/">นโยบายความเป็นส่วนตัว (POPIA)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 QuickEasy Software SA (Pty) Ltd สงวนลิขสิทธิ์</span>
+      <span>ภาคภูมิใจในความเป็นแอฟริกาใต้</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
