@@ -262,6 +262,93 @@ test('H pricing conversions round correctly', () => {
 });
 
 /* =========================================================================
+   I. SEO migration (robots, sitemap, canonicals, JSON-LD, redirect map)
+   ========================================================================= */
+const indexPages = pages.filter((p) => p.rel.endsWith('index.html'));
+const pageUrl = (r) => '/' + r.replace(/index\.html$/, ''); // 'blog/index.html' -> '/blog/'
+const canonPath = (html) => {
+  const m = html.match(/<link rel="canonical" href="https:\/\/quickeasysoftware\.com([^"]*)"/);
+  return m ? m[1] : null;
+};
+
+test('I1 robots.txt: present, points to sitemap, no Disallow', () => {
+  const f = path.join(ROOT, 'robots.txt');
+  if (!fs.existsSync(f)) return ['robots.txt missing'];
+  const t = read(f); const errs = [];
+  if (!/Sitemap:\s*https:\/\/quickeasysoftware\.com\/sitemap\.xml/.test(t)) errs.push('no sitemap directive');
+  if (/Disallow:\s*\//.test(t)) errs.push('robots.txt contains a Disallow rule (must be open in production)');
+  return errs;
+});
+
+test('I2 sitemap.xml: valid, complete, no redirect sources', () => {
+  const f = path.join(ROOT, 'sitemap.xml');
+  if (!fs.existsSync(f)) return ['sitemap.xml missing'];
+  const xml = read(f); const errs = [];
+  const locs = [...xml.matchAll(/<loc>https:\/\/quickeasysoftware\.com([^<]*)<\/loc>/g)].map((m) => m[1]);
+  // redirect sources across all three logs must never appear
+  const sources = new Set();
+  for (const rf of ['SITE-REDIRECTS.txt', 'BLOG-REDIRECTS.txt', 'LEGAL-REDIRECTS.txt']) {
+    const p = path.join(ROOT, rf); if (!fs.existsSync(p)) continue;
+    for (const line of read(p).split(/\r?\n/)) {
+      const m = line.replace(/#.*/, '').match(/^\s*(\/\S+)\s*->/); if (m) sources.add(m[1]);
+    }
+  }
+  for (const l of locs) { if (!resolves(l)) errs.push('sitemap loc does not resolve: ' + l);
+    if (sources.has(l)) errs.push('sitemap lists a redirect source: ' + l); }
+  const want = new Set(indexPages.map((p) => pageUrl(p.rel)));
+  if (locs.length !== want.size) errs.push(`sitemap has ${locs.length} locs, ${want.size} live pages`);
+  for (const u of want) if (!locs.includes(u)) errs.push('live page missing from sitemap: ' + u);
+  return errs;
+});
+
+test('I3 every page canonical present + self-referencing', () =>
+  indexPages.flatMap((p) => {
+    const c = canonPath(p.html);
+    if (c === null) return ['no quickeasysoftware.com canonical: ' + p.rel];
+    return c === pageUrl(p.rel) ? [] : [`canonical ${c} != ${pageUrl(p.rel)} (${p.rel})`];
+  }));
+
+test('I4 formerly-syndicated posts now canonical to local', () => {
+  const posts = [
+    '2023/05/29/is-quickeasy-bos-the-most-comprehensive-erp-solution/index.html',
+    '2024/09/17/the-astonishing-benefits-of-cloud-based-erp/index.html',
+    '2025/01/06/business-owners-take-the-break-you-deserve/index.html',
+    '2025/02/21/how-to-master-multi-level-boms/index.html',
+  ];
+  return posts.flatMap((r) => {
+    const p = get(r); if (!p) return ['missing: ' + r];
+    if (/rel="canonical"[^>]*(bizcommunity|itweb)/.test(p.html)) return ['off-site canonical still set: ' + r];
+    return canonPath(p.html) === pageUrl(r) ? [] : ['canonical not self-referencing: ' + r];
+  });
+});
+
+test('I5 JSON-LD valid; Organization/BlogPosting/BreadcrumbList where expected', () =>
+  indexPages.flatMap((p) => {
+    const m = p.html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    if (!m) return ['no JSON-LD: ' + p.rel];
+    let graph;
+    try { graph = JSON.parse(m[1])['@graph']; } catch (e) { return ['invalid JSON-LD: ' + p.rel + ' (' + e.message + ')']; }
+    if (!Array.isArray(graph)) return ['JSON-LD @graph not array: ' + p.rel];
+    const types = graph.map((n) => n['@type']);
+    const url = pageUrl(p.rel); const errs = [];
+    if (!types.includes('Organization')) errs.push('no Organization: ' + p.rel);
+    if (url === '/' && !types.includes('WebSite')) errs.push('home missing WebSite');
+    if (url !== '/' && !types.includes('BreadcrumbList')) errs.push('no BreadcrumbList: ' + p.rel);
+    if (/^\/20\d\d\/\d\d\/\d\d\/[^/]+\/$/.test(url) && !types.includes('BlogPosting')) errs.push('post missing BlogPosting: ' + p.rel);
+    return errs;
+  }));
+
+test('I6 consolidated redirect map: no chains, no dup sources', () => {
+  const f = path.join(ROOT, 'seo/redirect-map.csv');
+  if (!fs.existsSync(f)) return ['seo/redirect-map.csv missing'];
+  const rows = read(f).trim().split(/\r?\n/).slice(1).map((l) => l.split(','));
+  const errs = []; const sources = new Set(); const seen = new Set();
+  for (const [o] of rows) { if (seen.has(o)) errs.push('duplicate source: ' + o); seen.add(o); sources.add(o); }
+  for (const [o, n] of rows) if (sources.has(n)) errs.push(`chained redirect: ${o} -> ${n} (target is itself a source)`);
+  return errs;
+});
+
+/* =========================================================================
    Report
    ========================================================================= */
 let passed = 0, failed = 0;

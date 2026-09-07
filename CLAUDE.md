@@ -58,6 +58,25 @@ Skills are **drafting aids, not legal advice**; flag attorney review for legal p
 - Removed pages (Products pages, referral partner, Resources tutorials, `/articles/`,
   legacy flat posts/author archives) are 301-redirected in `SITE-REDIRECTS.txt`.
 
+## SEO / migration
+
+This is a same-domain WordPress→static migration of an already-ranking site
+(skill `web-builder-skills:website-seo` Part 7). Repo-side SEO artifacts:
+
+- `robots.txt` + `sitemap.xml` at root. Regenerate the sitemap after adding/
+  removing pages: `node seo/gen-sitemap.mjs` (walks live `index.html` files,
+  excludes redirect sources; non-www, trailing-slash URLs).
+- **Structured data (JSON-LD)** is injected before `</head>` on every page:
+  Organization (site-wide, with `areaServed`/`knowsAbout`), WebSite (home),
+  BreadcrumbList (inner pages), BlogPosting (posts), SoftwareApplication
+  (`/bos-erp/`). Applied by the one-off sweep — carry it forward on any new page.
+- **Redirects:** the human-readable logs are `SITE-/BLOG-/LEGAL-REDIRECTS.txt`;
+  `node seo/gen-redirect-map.mjs` consolidates them into `seo/redirect-map.csv`
+  (single-hop 301s, validated for cycles/dupes). **Serving these 301s is the
+  host's job** (`web-builder-skills:website-deployment` at cutover), not the repo.
+- Every page has a self-referencing canonical (non-www). Don't add `Disallow: /`
+  to `robots.txt` — a staging block leaking to production deindexes the site.
+
 ## Conventions
 
 - Folder path = live URL (static site served at domain root).

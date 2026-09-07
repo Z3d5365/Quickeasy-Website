@@ -36,6 +36,9 @@
 /the-benefits-and-burdens-of-industry-4-0-and-erp-for-manufacturing/           ->  /2022/01/07/the-benefits-and-burdens-of-industry-4-0-and-erp-for-manufacturing/
 /how-erp-and-the-future-of-work-in-south-africas-digital-economy-are-intrinsically-linked/  ->  /2022/01/06/how-erp-and-the-future-of-work-in-south-africas-digital-economy-are-intrinsically-linked/
 
+# --- Duplicate/alias solution page consolidated ---
+/erp-for-printing-signage-packaging/  ->  /printing-signage-packaging/   # near-duplicate of the linked industry page
+
 # --- Legacy author archives & alias stubs ---
 /author/cadmin/                ->  /blog/                # WordPress author archive
 /author/qeadmin/               ->  /blog/                # WordPress author archive

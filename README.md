@@ -122,15 +122,24 @@ existing URLs.
 
 ## Assets & system files
 
-These are **not pages** — leave them in place; the pages reference them.
+The site is now a clean static build — **all WordPress directories have been
+removed** (`wp-content/`, `wp-includes/`, `wp-admin/`, `wp-json/`, `feed/`,
+`author/`, `category/`, `tag/`, `xmlrpc.php`, etc. no longer exist). Only these
+non-page folders remain, and the pages reference them:
 
 | Folder | What it holds |
 |--------|---------------|
-| `wp-content/` | Images/uploads, theme & plugin CSS/JS |
-| `wp-includes/` | Core CSS/JS the pages load |
-| `assets/ext/` | Mirrored third-party assets (fonts, external images/PDFs) |
-| `wp-admin/`, `wp-json/`, `wp-login.php` | WordPress machinery from the mirror (inert in a static copy) |
-| `feed/`, `comments/`, `author/`, `category/`, `tag/` | WordPress archives/RSS from the mirror (not marketing pages) |
+| `assets/css/`, `assets/js/`, `assets/img/` | The design system (`main.css`, `main.js`) and brand/hero/client images |
+| `seo/` | Sitemap + redirect-map generators (`gen-sitemap.mjs`, `gen-redirect-map.mjs`, `redirect-map.csv`) |
+| `test/` | `site-check.mjs` page-health test suite (`npm test`) |
+
+**SEO / migration files at root:** `robots.txt`, `sitemap.xml`, and the
+`*-REDIRECTS.txt` 301 logs (consolidated into `seo/redirect-map.csv`).
+
+> **Note:** the navigation/page tables above describe the original WordPress
+> mirror and are kept for historical reference. The **current** information
+> architecture (Products & Resources menus removed, Support menu added, pages
+> consolidated) is documented in `CLAUDE.md` — treat that as the source of truth.
 
 ---
 
