@@ -47,8 +47,10 @@ p{margin:0 0 1em}
 
 /* ---------- header / nav ---------- */
 .site-header{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--line)}
-.site-header__bar{display:flex;align-items:center;justify-content:space-between;height:var(--header-h);gap:20px}
-.brand{display:flex;align-items:center;flex:0 0 auto}
+.site-header__bar{display:flex;align-items:center;justify-content:flex-start;height:var(--header-h);gap:20px}
+.brand{display:flex;align-items:center;flex:0 0 auto;margin-right:auto}
+/* order: brand (left) · nav · theme · lang · hamburger (right) */
+.nav{order:1}.theme-toggle{order:2}.lang-toggle{order:3}.nav-toggle{order:4}
 .brand img{height:40px;width:auto}
 .nav{display:flex;align-items:center;gap:2px}
 .nav ul{list-style:none;margin:0;padding:0}
@@ -334,7 +336,7 @@ code{background:var(--paper);color:var(--red-dk);padding:.15em .4em;border-radiu
    Dark mode — token-based (light stays on :root). <html data-theme> is set
    pre-paint by an inline head script: stored choice, else OS preference.
    ========================================================================= */
-.theme-toggle{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;background:none;border:1px solid var(--line);border-radius:var(--radius);padding:8px;color:var(--ink-2);cursor:pointer;transition:color .2s,border-color .2s}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;background:none;border:1px solid var(--line);border-radius:var(--radius);padding:8px;color:var(--ink-2);cursor:pointer;transition:color .2s,border-color .2s}
 .theme-toggle:hover{color:var(--red);border-color:var(--ink)}
 .theme-toggle svg{width:20px;height:20px;display:block}
 .theme-toggle .icon-sun{display:none}
