@@ -212,7 +212,7 @@ test('F4 documentation page', () => {
   const errs = [];
   if (count(d.html, /class="doc-(mark|media)"/g) !== 3) errs.push('expected 3 edition cards (doc-mark/doc-media)');
   if (!d.html.includes('/implementation-methodology/')) errs.push('no Implementation Methodology link');
-  for (const img of ['/assets/img/bos-pro.png', '/assets/img/bos-enterprise.jpg'])
+  for (const img of ['/assets/img/bos-pro.png', '/assets/img/bos-enterprise.png'])
     if (!d.html.includes(img)) errs.push('missing edition image: ' + img);
   return errs;
 });
