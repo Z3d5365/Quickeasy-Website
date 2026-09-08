@@ -316,7 +316,7 @@ pre.code code{color:inherit;background:none;padding:0}
 code{background:var(--paper);color:var(--red-dk);padding:.15em .4em;border-radius:4px;font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.9em}
 
 /* ---------- prose (article body) ---------- */
-.prose{max-width:760px}
+.prose{max-width:900px}
 .prose>:first-child{margin-top:0}
 .prose h2{font-size:26px;margin:1.6em 0 .5em}
 .prose h3{font-size:20px;margin:1.4em 0 .4em}
