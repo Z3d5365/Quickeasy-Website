@@ -345,11 +345,12 @@ code{background:var(--paper);color:var(--red-dk);padding:.15em .4em;border-radiu
 :root[data-theme="dark"] .theme-toggle .icon-moon{display:none}
 :root[data-theme="dark"] .theme-toggle .icon-sun{display:inline}
 
-/* neutral-grey dark palette (matches Kamnod) */
+/* neutral-grey dark palette (Kamnod-inspired elevation ladder: bg < paper < surface,
+   each step clearly lighter so panels visibly lift off the page instead of blending in) */
 :root[data-theme="dark"]{
-  --bg:#0a0a0a; --surface:#161616; --paper:#101010;
+  --bg:#0a0a0a; --surface:#1c1c1c; --paper:#141414;
   --ink:#f7f7f7; --ink-2:#d4d4d4; --body:#cfcfcf; --muted:#8f8f8f; --graphite:#a3a3a3;
-  --line:#262626; --line-2:#1f1f1f;
+  --line:#333333; --line-2:#262626;
   --red:#ededea; --red-dk:#ffffff; --red-wash:rgba(255,255,255,.08);
   --shadow-sm:0 1px 2px rgba(0,0,0,.4);
   --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px -22px rgba(0,0,0,.7);
@@ -357,9 +358,9 @@ code{background:var(--paper);color:var(--red-dk);padding:.15em .4em;border-radiu
 /* no-JS fallback: flip tokens when the OS asks and no explicit choice is set */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme]){
-    --bg:#0a0a0a; --surface:#161616; --paper:#101010;
+    --bg:#0a0a0a; --surface:#1c1c1c; --paper:#141414;
     --ink:#f7f7f7; --ink-2:#d4d4d4; --body:#cfcfcf; --muted:#8f8f8f; --graphite:#a3a3a3;
-    --line:#262626; --line-2:#1f1f1f;
+    --line:#333333; --line-2:#262626;
     --red:#ededea; --red-dk:#ffffff; --red-wash:rgba(255,255,255,.08);
     --shadow-sm:0 1px 2px rgba(0,0,0,.4);
     --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px -22px rgba(0,0,0,.7);
@@ -384,6 +385,13 @@ code{background:var(--paper);color:var(--red-dk);padding:.15em .4em;border-radiu
 :root[data-theme="dark"] .section--ink .btn--ghost:hover{background:var(--ink);color:#0a0a0a}
 :root[data-theme="dark"] .section--ink .form-group label{color:var(--ink)}
 :root[data-theme="dark"] .nav a.nav__cta{color:#0a0a0a}
+/* .site-footer/.currency-toggle__btn.is-active/.price-card__badge/pre.code all hardcode
+   background:var(--ink) (assuming "ink" is always dark) — --ink flips to near-white in
+   dark mode, so each needs its own dark-mode fix instead of silently turning white-on-white */
+:root[data-theme="dark"] .site-footer{background:var(--surface);border-top:1px solid var(--line)}
+:root[data-theme="dark"] .currency-toggle__btn.is-active{color:#0a0a0a}
+:root[data-theme="dark"] .price-card__badge{color:#0a0a0a}
+:root[data-theme="dark"] pre.code{background:var(--surface);color:var(--body);border:1px solid var(--line)}
 /* logo: legible light chip behind the header mark in dark (footer already chips).
    When assets/img/logo-dark.png is supplied, replace the chip with:
    :root[data-theme="dark"] .brand img,:root[data-theme="dark"] .footer-brand img{content:url('/assets/img/logo-dark.png')} */
