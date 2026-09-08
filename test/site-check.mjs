@@ -199,7 +199,7 @@ test('F3 pricing redesign', () => {
   if (!p.html.includes('class="currency-toggle"')) errs.push('no currency toggle');
   if (count(p.html, /data-cur="(ZAR|USD|THB)"/g) !== 3) errs.push('expected 3 currency buttons');
   if (count(p.html, /class="price-card/g) < 3) errs.push('expected >=3 price cards');
-  if (!/data-zar="820"/.test(p.html)) errs.push('BOS License base price missing');
+  if (!/data-zar="790"/.test(p.html)) errs.push('BOS License base price missing');
   for (const gone of ['ZAR17.83', 'pricing cycle', 'Average Rate of Exchange', 'class="clients"']) {
     if (p.html.includes(gone)) errs.push('stale content: ' + gone);
   }
@@ -253,7 +253,7 @@ test('H pricing conversions round correctly', () => {
   if (thbRate !== 1.90) errs.push('THB rate changed: ' + thbRate);
   // Expected rounded values for the published ZAR bases.
   const expect = [
-    [820, 46, 1558], [1230, 69, 2337], [499, 28, 948],
+    [790, 44, 1501], [1185, 66, 2252], [499, 28, 948],
     [927, 52, 1761], [1480, 83, 2812], [2746, 154, 5217],
     [5153, 289, 9791], [89, 5, 169],
   ];
