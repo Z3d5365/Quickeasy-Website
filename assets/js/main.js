@@ -54,16 +54,13 @@
   });
 
   /* ---------- Contact form (per contact-form-integration skill) ---------- */
-  // TODO: set this to the relay endpoint given to you by the relay operator.
-  var RELAY_URL = "";                       // <-- fill in the relay API URL
+  var RELAY_URL = "https://e2b3gbknj0.execute-api.eu-west-1.amazonaws.com/contact";
   var SITE_NAME = "quickeasysoftware.com";
 
-  // Live site mails info@quickeasysoftware.com; anywhere else (localhost,
-  // staging, preview) mails the test inbox so testing never hits the live one.
+  // All submissions currently route to the shared dev inbox.
   function recipientFor() {
-    // Temporary: send everything to the test inbox for now.
     return "info@vibecraftedsoftware.com";
-    // Live/test switch (restore when going live):
+    // Live/test switch (restore when quickeasysoftware.com should get its own mail):
     // var h = location.hostname;
     // if (h === "quickeasysoftware.com" || h === "www.quickeasysoftware.com") return "info@quickeasysoftware.com";
     // return "info@vibecraftedsoftware.com";

@@ -44,9 +44,13 @@ Skills are **drafting aids, not legal advice**; flag attorney review for legal p
 - Pages are plain HTML using these assets with **root-relative** paths (`/assets/…`, `/pricing/`).
 - **Nav & footer are duplicated in every page** (no build system). Change them with a
   one-off Node sweep over all pages, not by hand file-by-file.
-- Contact form: recipient switches by hostname — live `quickeasysoftware.com` →
-  `info@quickeasysoftware.com`; anywhere else (localhost/staging) → `info@vibecraftedsoftware.com`.
-  Set `RELAY_URL` in `main.js` once the relay endpoint is provided.
+- Contact form: wired to the shared relay (`RELAY_URL` in `main.js`, per
+  `web-builder-skills:contact-form-integration`). Currently **all** submissions
+  route to the dev inbox `info@vibecraftedsoftware.com` regardless of hostname
+  — the hostname-based live/test switch (live `quickeasysoftware.com` →
+  `info@quickeasysoftware.com`, everywhere else → the dev inbox) is written
+  but commented out in `recipientFor()`; restore it when quickeasysoftware.com
+  should start getting its own mail.
 
 ## Information architecture
 
