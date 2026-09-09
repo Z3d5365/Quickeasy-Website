@@ -242,7 +242,9 @@ test('G2 main.js has nav, contact form and currency toggle', () => {
 });
 
 /* =========================================================================
-   H. Pricing currency math (mirrors main.js: USD=zar*0.056, THB=zar*1.90)
+   H. Pricing currency math (mirrors main.js: USD=zar*0.056, THB=zar*1.90,
+   except a plan carrying a published data-usd override, which shows that
+   fixed price instead of the computed conversion)
    ========================================================================= */
 test('H pricing conversions round correctly', () => {
   const js = read(path.join(ROOT, 'assets/js/main.js'));
@@ -251,16 +253,25 @@ test('H pricing conversions round correctly', () => {
   const errs = [];
   if (usdRate !== 0.056) errs.push('USD rate changed: ' + usdRate);
   if (thbRate !== 1.90) errs.push('THB rate changed: ' + thbRate);
-  // Expected rounded values for the published ZAR bases.
+  // Expected THB (always rate-derived — no THB overrides published) and USD
+  // (rate-derived unless a data-usd override applies) for every ZAR base.
   const expect = [
-    [790, 44, 1501], [1185, 66, 2252], [499, 28, 948],
-    [927, 52, 1761], [1480, 83, 2812], [2746, 154, 5217],
+    [790, 49, 1501], [1185, 74, 2252], [499, 28, 948],
+    [927, 55, 1761], [1480, 83, 2812], [2746, 154, 5217],
     [5153, 289, 9791], [89, 5, 169],
   ];
+  const overrides = { 790: 49, 1185: 74, 927: 55 };
+  const html = read(path.join(ROOT, 'pricing/index.html'));
   for (const [zar, usd, thb] of expect) {
-    const gotUsd = Math.round(zar * usdRate), gotThb = Math.round(zar * thbRate);
-    if (gotUsd !== usd) errs.push(`R${zar} -> USD ${gotUsd}, expected ${usd}`);
+    const gotThb = Math.round(zar * thbRate);
     if (gotThb !== thb) errs.push(`R${zar} -> THB ${gotThb}, expected ${thb}`);
+    if (overrides[zar] !== undefined) {
+      const re = new RegExp(`data-zar="${zar}" data-usd="${overrides[zar]}"`);
+      if (!re.test(html)) errs.push(`pricing/index.html missing data-usd override for R${zar}`);
+    } else {
+      const gotUsd = Math.round(zar * usdRate);
+      if (gotUsd !== usd) errs.push(`R${zar} -> USD ${gotUsd}, expected ${usd}`);
+    }
   }
   return errs;
 });

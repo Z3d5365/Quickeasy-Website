@@ -151,7 +151,12 @@
     document.querySelectorAll(".price").forEach(function (el) {
       var zar = parseFloat(el.getAttribute("data-zar"));
       if (isNaN(zar)) return;
-      el.textContent = c.symbol + formatPrice(Math.round(zar * c.rate));
+      // A per-currency override (e.g. data-usd="49") shows a fixed published
+      // price instead of the computed rate*zar conversion, for the handful
+      // of plans with a specific quoted USD/THB price.
+      var override = el.getAttribute("data-" + cur.toLowerCase());
+      var amount = override !== null ? parseFloat(override) : Math.round(zar * c.rate);
+      el.textContent = c.symbol + formatPrice(amount);
     });
     document.querySelectorAll(".currency-toggle__btn").forEach(function (b) {
       var on = b.getAttribute("data-cur") === cur;
