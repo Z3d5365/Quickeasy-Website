@@ -39,11 +39,6 @@ p{margin:0 0 1em}
 .btn--ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn--ghost:hover{background:var(--ink);color:#fff}
 .btn--sm{padding:10px 18px;font-size:14px}
-/* On dark sections the near-black primary would vanish — invert it to white */
-.section--ink .btn--primary{background:#fff;color:var(--ink);border-color:#fff}
-.section--ink .btn--primary:hover{background:#e6e3e0;border-color:#e6e3e0;color:var(--ink)}
-.section--ink .btn--ghost{color:#fff;border-color:rgba(255,255,255,.6)}
-.section--ink .btn--ghost:hover{background:#fff;color:var(--ink)}
 
 /* ---------- header / nav ---------- */
 .site-header{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--line)}
@@ -99,13 +94,14 @@ p{margin:0 0 1em}
 /* ---------- sections / hero / cards (shared page components) ---------- */
 .section{padding:72px 0}
 .section--paper{background:var(--paper)}
-.section--ink{background:var(--ink);color:#d9d6d3}
-.section--ink h2,.section--ink h3{color:#fff}
+.section--ink{background:var(--paper);color:var(--body);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* Two grey bands back to back read as one slab — when ink directly follows paper, go white instead */
+main>.section--paper+.section--ink{background:var(--bg)}
 .eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);margin:0 0 14px}
-.section--ink .eyebrow{color:#b7b3af}
+.section--ink .eyebrow{color:var(--muted)}
 .h2{font-size:clamp(27px,3.6vw,38px);margin:0 0 14px;text-wrap:balance}
 .lead{font-size:clamp(16px,1.6vw,18px);color:var(--ink-2);max-width:62ch}
-.section--ink .lead{color:#c3bfbc}
+.section--ink .lead{color:var(--body)}
 .center{text-align:center}
 .center .lead{margin-left:auto;margin-right:auto}
 .sec-head{margin-bottom:44px}
@@ -170,6 +166,8 @@ p{margin:0 0 1em}
 .price-group-title{margin:48px 0 24px;font-size:20px}
 .price-grid{display:grid;gap:22px;grid-template-columns:1fr;margin:0 auto}
 @media(min-width:760px){.price-grid--2{grid-template-columns:repeat(2,1fr);max-width:820px}}
+@media(min-width:760px){.price-grid--3{grid-template-columns:repeat(2,1fr);max-width:820px}}
+@media(min-width:1040px){.price-grid--3{grid-template-columns:repeat(3,1fr);max-width:1120px}}
 .price-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px 26px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
 .price-card--featured{border-color:var(--ink);box-shadow:var(--shadow)}
 .price-card__badge{position:absolute;top:-11px;left:26px;background:var(--ink);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
@@ -202,10 +200,6 @@ p{margin:0 0 1em}
 .form-status{font-size:14px;font-weight:600;min-height:1.2em}
 .form-status.is-success{color:var(--ink);font-weight:700}
 .form-status.is-error{color:var(--ink-2)}
-/* Contact form on a dark section: labels & status must be light to be legible */
-.section--ink .form-group label{color:#fff}
-.section--ink .form-status.is-success{color:#fff}
-.section--ink .form-status.is-error{color:#e6e3e0}
 
 /* ---------- inner-page hero (single column) ---------- */
 .hero--sub .hero-grid{grid-template-columns:1fr;text-align:center;padding:56px 0}

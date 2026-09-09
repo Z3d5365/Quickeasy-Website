@@ -107,11 +107,16 @@ This is a same-domain WordPress→static migration of an already-ranking site
   between a page and its translated counterpart — a plain `<a>`, no JS.
 - Thai pages load **Noto Sans Thai** (added to their Google Fonts link) and
   `html[lang="th"]` sets `--font` to it; Latin falls back to Open Sans.
-- **Status:** first pass = the homepage. Nav/footer links on Thai pages point to
-  English pages until each is translated; translate a page, drop it at `/th/<path>/`,
-  then repoint. **Blog posts and legal pages are excluded** (legal needs
-  professional translation). Thai marketing copy is a machine-drafted first pass —
-  **flag for native-speaker review** before launch. Thai contact: QuickEasy Asia,
+- **Status:** homepage, most inner marketing/feature pages, all 112 blog posts, and the
+  `/th/blog/` hub are translated under `/th/`. Nav/footer links on Thai pages point to
+  English pages until each target is translated; translate a page, drop it at
+  `/th/<path>/`, then repoint. **Legal pages are excluded** (need professional
+  translation, not a first-pass machine draft). Blog posts keep their date-based
+  `/th/YYYY/MM/DD/slug/` URLs, mirroring the English structure; `/th/blog/` mirrors
+  `/blog/`'s 8 topic categories, reusing each post's already-translated title/date, and
+  every Thai page's Blogs nav submenu + each post's "back to all blogs" link point at
+  it. Thai marketing/blog copy is a machine-drafted first pass — **flag for
+  native-speaker review** before launch. Thai contact: QuickEasy Asia,
   nim.pattraporn@quickeasysoftware.com, +66 (0) 92 849 4555.
 
 ## Conventions
