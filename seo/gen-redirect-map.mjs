@@ -16,7 +16,7 @@ for (const f of FILES) {
   if (!fs.existsSync(p)) continue;
   for (const raw of fs.readFileSync(p, 'utf8').split('\n')) {
     const line = raw.replace(/#.*$/, '').trim();
-    const m = line.match(/^(\/\S+)\s*->\s*(\/\S+)$/);
+    const m = line.match(/^(\/\S+)\s*->\s*(\/\S*)$/); // \S* so a bare "/" target is kept
     if (!m) continue;
     const [, from, to] = m;
     if (map.has(from) && map.get(from) !== to) dupes.push(`${from} -> ${map.get(from)} / ${to}`);

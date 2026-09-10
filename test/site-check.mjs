@@ -186,10 +186,17 @@ test('F1 homepage', () => {
   return errs;
 });
 
-test('F2 apps hero uses the shared mock', () => {
-  const a = get('apps/index.html');
-  if (!a) return ['apps/index.html missing'];
-  return a.html.includes('class="hero-mock"') ? [] : ['apps hero not using hero-mock'];
+// The Apps page was removed — the nav item now links out to the apps site.
+test('F2 Apps links point off-site, not at a local /apps/ page', () => {
+  const errs = [];
+  if (fs.existsSync(path.join(ROOT, 'apps'))) errs.push('apps/ should be gone (301 -> /)');
+  if (fs.existsSync(path.join(ROOT, 'th/apps'))) errs.push('th/apps/ should be gone (301 -> /th/)');
+  for (const p of pages) {
+    if (p.html.includes('href="/apps/') || p.html.includes('href="/th/apps/')) errs.push(p.rel + ' still links to a local apps page');
+  }
+  const missing = navPages.filter((p) => !p.html.includes('href="https://www.vibecraftedsoftware.com"'));
+  if (missing.length) errs.push(missing.length + ' nav pages lack the external Apps link, e.g. ' + missing[0].rel);
+  return errs;
 });
 
 test('F3 pricing redesign', () => {
@@ -197,10 +204,13 @@ test('F3 pricing redesign', () => {
   if (!p) return ['pricing/index.html missing'];
   const errs = [];
   if (!p.html.includes('class="currency-toggle"')) errs.push('no currency toggle');
-  if (count(p.html, /data-cur="(ZAR|USD|THB)"/g) !== 3) errs.push('expected 3 currency buttons');
-  if (count(p.html, /class="price-card/g) < 3) errs.push('expected >=3 price cards');
-  if (!/data-zar="790"/.test(p.html)) errs.push('BOS License base price missing');
-  for (const gone of ['ZAR17.83', 'pricing cycle', 'Average Rate of Exchange', 'class="clients"']) {
+  if (count(p.html, /data-cur="(ZAR|USD)"/g) !== 2) errs.push('expected 2 currency buttons (ZAR, USD)');
+  if (count(p.html, /class="price-card/g) < 4) errs.push('expected >=4 price cards');
+  if (!/data-zar="1230"/.test(p.html)) errs.push('Solo base price missing');
+  if (!/data-zar="820"/.test(p.html)) errs.push('Team per-user price missing');
+  if (!p.html.includes('Cloud Services \u2014 BOS Enterprise')) errs.push('cloud services heading not renamed');
+  // Retired currency, retired plan, and the old exchange-rate table.
+  for (const gone of ['THB', 'Starter Pack', 'ZAR17.83', 'pricing cycle', 'Average Rate of Exchange', 'class="clients"']) {
     if (p.html.includes(gone)) errs.push('stale content: ' + gone);
   }
   return errs;
@@ -246,32 +256,32 @@ test('G2 main.js has nav, contact form and currency toggle', () => {
    except a plan carrying a published data-usd override, which shows that
    fixed price instead of the computed conversion)
    ========================================================================= */
-test('H pricing conversions round correctly', () => {
+test('H published prices match on both pricing pages', () => {
   const js = read(path.join(ROOT, 'assets/js/main.js'));
-  const usdRate = parseFloat((js.match(/USD:\s*\{\s*rate:\s*([\d.]+)/) || [])[1]);
-  const thbRate = parseFloat((js.match(/THB:\s*\{\s*rate:\s*([\d.]+)/) || [])[1]);
   const errs = [];
-  if (usdRate !== 0.056) errs.push('USD rate changed: ' + usdRate);
-  if (thbRate !== 1.90) errs.push('THB rate changed: ' + thbRate);
-  // Expected THB (always rate-derived — no THB overrides published) and USD
-  // (rate-derived unless a data-usd override applies) for every ZAR base.
-  const expect = [
-    [790, 49, 1501], [1185, 74, 2252], [499, 28, 948],
-    [927, 55, 1761], [1480, 83, 2812], [2746, 154, 5217],
-    [5153, 289, 9791], [89, 5, 169],
+  if (js.includes('THB')) errs.push('THB still in main.js');
+  const usdRate = parseFloat((js.match(/USD:\s*\{\s*rate:\s*([\d.]+)/) || [])[1]);
+  if (usdRate !== 0.056) errs.push('USD fallback rate changed: ' + usdRate);
+  // The published table: ZAR is the invoiced price, USD the published equivalent.
+  // ZAR values must stay identical to the pre-migration site.
+  const published = [
+    [1230, 76], [820, 50],                                    // Solo, Team
+    [499, 31], [927, 57], [1480, 91], [2746, 170], [5153, 318], // cloud server
+    [89, 5], [185, 10],                                       // Winflector, RDP
   ];
-  const overrides = { 790: 49, 1185: 74, 927: 55 };
-  const html = read(path.join(ROOT, 'pricing/index.html'));
-  for (const [zar, usd, thb] of expect) {
-    const gotThb = Math.round(zar * thbRate);
-    if (gotThb !== thb) errs.push(`R${zar} -> THB ${gotThb}, expected ${thb}`);
-    if (overrides[zar] !== undefined) {
-      const re = new RegExp(`data-zar="${zar}" data-usd="${overrides[zar]}"`);
-      if (!re.test(html)) errs.push(`pricing/index.html missing data-usd override for R${zar}`);
-    } else {
-      const gotUsd = Math.round(zar * usdRate);
-      if (gotUsd !== usd) errs.push(`R${zar} -> USD ${gotUsd}, expected ${usd}`);
+  for (const rel of ['pricing/index.html', 'th/pricing/index.html']) {
+    const page = get(rel);
+    if (!page) { errs.push(rel + ' missing'); continue; }
+    for (const [zar, usd] of published) {
+      if (!page.html.includes('data-zar="' + zar + '" data-usd="' + usd + '"')) {
+        errs.push(rel + ': R' + zar + ' / $' + usd + ' not published');
+      }
     }
+    // Every price on these pages is published in both currencies, never computed.
+    const zars = count(page.html, /data-zar="/g);
+    const usds = count(page.html, /data-usd="/g);
+    if (zars !== usds) errs.push(rel + ': ' + zars + ' ZAR prices but ' + usds + ' USD overrides');
+    if (zars !== published.length) errs.push(rel + ': expected ' + published.length + ' prices, found ' + zars);
   }
   return errs;
 });

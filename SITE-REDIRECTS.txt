@@ -44,3 +44,7 @@
 /author/qeadmin/               ->  /blog/                # WordPress author archive
 /bos-er/                       ->  /bos-erp/             # typo/alias stub
 /contact/                      ->  /contact-us/          # alias stub
+
+# --- Apps page removed (content lives on the VibeCrafted apps site; nav now links there) ---
+/apps/                         ->  /                     # Apps; homepage "Extend BOS with apps" section links out to vibecraftedsoftware.com
+/th/apps/                      ->  /th/                  # Thai Apps

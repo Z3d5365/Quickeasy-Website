@@ -130,12 +130,11 @@
   });
 
   /* ---------- Pricing currency toggle ---------- */
-  // ZAR is the base. USD/THB are indicative, derived from fixed rates and
-  // rounded to the nearest 1. Update these two rates to re-peg all prices.
+  // ZAR is the base. Every published price carries a data-usd override, so the
+  // USD rate below is only a fallback for any price without one.
   var CUR = {
     ZAR: { rate: 1,     symbol: "R" },
-    USD: { rate: 0.056, symbol: "$" },
-    THB: { rate: 1.90,  symbol: "฿" }
+    USD: { rate: 0.056, symbol: "$" }
   };
 
   function formatPrice(n) {
@@ -148,9 +147,8 @@
     document.querySelectorAll(".price").forEach(function (el) {
       var zar = parseFloat(el.getAttribute("data-zar"));
       if (isNaN(zar)) return;
-      // A per-currency override (e.g. data-usd="49") shows a fixed published
-      // price instead of the computed rate*zar conversion, for the handful
-      // of plans with a specific quoted USD/THB price.
+      // A per-currency override (e.g. data-usd="76") shows the fixed published
+      // price instead of a computed rate*zar conversion.
       var override = el.getAttribute("data-" + cur.toLowerCase());
       var amount = override !== null ? parseFloat(override) : Math.round(zar * c.rate);
       el.textContent = c.symbol + formatPrice(amount);
