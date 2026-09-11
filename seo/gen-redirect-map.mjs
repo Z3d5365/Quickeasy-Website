@@ -1,4 +1,4 @@
-// Consolidate SITE-/BLOG-/LEGAL-REDIRECTS.txt into one machine-readable 301
+// Consolidate every *-REDIRECTS.txt log into one machine-readable 301
 // map for the host to serve (website-deployment consumes this).
 // Flattens any residual chains to a single hop and fails on cycles/dupes.
 // Run:  node seo/gen-redirect-map.mjs
@@ -7,7 +7,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const FILES = ['SITE-REDIRECTS.txt', 'BLOG-REDIRECTS.txt', 'LEGAL-REDIRECTS.txt'];
+// Every *-REDIRECTS.txt at the repo root, discovered rather than listed, so adding a
+// new log file does not mean remembering to edit this script. Sorted for stable output.
+const FILES = fs.readdirSync(ROOT).filter((f) => /-REDIRECTS\.txt$/.test(f)).sort();
 
 const map = new Map();
 const dupes = [];
@@ -15,7 +17,10 @@ for (const f of FILES) {
   const p = path.join(ROOT, f);
   if (!fs.existsSync(p)) continue;
   for (const raw of fs.readFileSync(p, 'utf8').split('\n')) {
-    const line = raw.replace(/#.*$/, '').trim();
+    // A comment is a '#' at line start or after whitespace. A '#' hard against the
+    // preceding character is part of the URL — targets like /blog/#erp-business-systems
+    // land the visitor on the right topic section of the blog hub.
+    const line = raw.replace(/(^|\s)#.*$/, '$1').trim();
     const m = line.match(/^(\/\S+)\s*->\s*(\/\S*)$/); // \S* so a bare "/" target is kept
     if (!m) continue;
     const [, from, to] = m;

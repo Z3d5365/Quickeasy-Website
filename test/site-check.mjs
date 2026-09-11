@@ -48,6 +48,10 @@ function resolves(urlPath) {
   return false;
 }
 
+// Every *-REDIRECTS.txt at the repo root, discovered rather than listed, so a new log
+// is covered by the sitemap and redirect gates without editing this file.
+const redirectLogs = () => fs.readdirSync(ROOT).filter((f) => /-REDIRECTS\.txt$/.test(f)).sort();
+
 const files = walk(ROOT);
 const pages = files.map((f) => ({ f, rel: rel(f), html: read(f) }));
 const navPages = pages.filter((p) => p.html.includes('id="site-nav"'));
@@ -328,9 +332,9 @@ test('I2 sitemap.xml: valid, complete, no redirect sources', () => {
   if (!fs.existsSync(f)) return ['sitemap.xml missing'];
   const xml = read(f); const errs = [];
   const locs = [...xml.matchAll(/<loc>https:\/\/quickeasysoftware\.com([^<]*)<\/loc>/g)].map((m) => m[1]);
-  // redirect sources across all three logs must never appear
+  // redirect sources from every *-REDIRECTS.txt log must never appear
   const sources = new Set();
-  for (const rf of ['SITE-REDIRECTS.txt', 'BLOG-REDIRECTS.txt', 'LEGAL-REDIRECTS.txt']) {
+  for (const rf of redirectLogs()) {
     const p = path.join(ROOT, rf); if (!fs.existsSync(p)) continue;
     for (const line of read(p).split(/\r?\n/)) {
       const m = line.replace(/#.*/, '').match(/^\s*(\/\S+)\s*->/); if (m) sources.add(m[1]);
@@ -512,6 +516,78 @@ test('L3 band tone comes only from --paper (no hardcoded --ink background)', () 
     errs.push('adjacent-sibling band override is back in main.css — fix the page markup instead');
   if (!/\.section--paper{background:var\(--paper\)}/.test(css))
     errs.push('.section--paper no longer sets the paper background');
+  return errs;
+});
+
+/* =========================================================================
+   M. Go-live gates (cutover to the real domain)
+   The migration keeps rankings only if every indexed old URL lands somewhere
+   real on the first request. These fail the deploy if that stops being true.
+   ========================================================================= */
+const redirectRows = () => {
+  const f = path.join(ROOT, 'seo/redirect-map.csv');
+  if (!fs.existsSync(f)) return null;
+  return read(f).trim().split(/\r?\n/).slice(1).map((l) => l.split(','));
+};
+
+test('M1 every redirect target resolves to a real page', () => {
+  const rows = redirectRows();
+  if (!rows) return ['seo/redirect-map.csv missing'];
+  // resolves() already strips #fragment and ?query, so /blog/#topic checks /blog/.
+  return rows.filter(([, to]) => !resolves(to)).map(([from, to]) => `${from} -> ${to} (target does not exist)`);
+});
+
+test('M2 no redirect source still exists as a live page', () => {
+  const rows = redirectRows();
+  if (!rows) return ['seo/redirect-map.csv missing'];
+  // A source that is also a real page means the file wins and the 301 never fires.
+  return rows
+    .filter(([from]) => fs.existsSync(path.join(ROOT, from.replace(/^\//, ''), 'index.html')))
+    .map(([from]) => `${from} is both a redirect source and a live page — the redirect is dead`);
+});
+
+test('M3 404 page exists, is noindex, and is not in the sitemap', () => {
+  const f = path.join(ROOT, '404.html');
+  if (!fs.existsSync(f)) return ['404.html missing — CloudFront maps 403/404 to it'];
+  const html = read(f); const errs = [];
+  if (!/<meta\s+name="robots"\s+content="[^"]*noindex/i.test(html))
+    errs.push('404.html is not noindex');
+  if (/rel="canonical"/.test(html))
+    errs.push('404.html has a canonical — it is served under every missing URL, so it cannot self-canonicalise');
+  const sm = path.join(ROOT, 'sitemap.xml');
+  if (fs.existsSync(sm) && read(sm).includes('/404')) errs.push('404 page listed in sitemap.xml');
+  return errs;
+});
+
+test('M4 hreflang pairs are reciprocal and resolve', () => {
+  const errs = [];
+  const hrefOf = (html, lang) =>
+    (html.match(new RegExp(`<link rel="alternate" hreflang="${lang}" href="https://quickeasysoftware\\.com([^"]*)"`)) || [])[1];
+  for (const p of thPages) {
+    const en = hrefOf(p.html, 'en');
+    if (!en) { errs.push('no hreflang="en" href: ' + p.rel); continue; }
+    if (!resolves(en)) { errs.push(`${p.rel} points hreflang="en" at ${en}, which does not exist`); continue; }
+    const enPage = get(en.replace(/^\//, '') + 'index.html');
+    if (!enPage) continue; // resolves() accepted it; not an index.html page we track
+    const back = hrefOf(enPage.html, 'th');
+    if (back !== pageUrl(p.rel))
+      errs.push(`${en} points hreflang="th" at ${back || '(none)'}, expected ${pageUrl(p.rel)}`);
+  }
+  return errs;
+});
+
+test('M5 seo/redirects.json is in sync with redirect-map.csv', () => {
+  const f = path.join(ROOT, 'seo/redirects.json');
+  if (!fs.existsSync(f)) return ['seo/redirects.json missing — run node seo/gen-kvs-redirects.mjs'];
+  const rows = redirectRows();
+  if (!rows) return [];
+  let kvs;
+  try { kvs = JSON.parse(read(f)); } catch (e) { return ['seo/redirects.json is not valid JSON: ' + e.message]; }
+  const errs = [];
+  for (const [from, to] of rows) {
+    if (kvs[from] === undefined) errs.push(`${from} missing from redirects.json — regenerate it`);
+    else if (kvs[from] !== to) errs.push(`${from} -> ${kvs[from]} in redirects.json, ${to} in the csv`);
+  }
   return errs;
 });
 

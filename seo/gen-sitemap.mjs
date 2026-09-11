@@ -27,7 +27,7 @@ function urlOf(file) {
 
 // Redirect sources must never appear in the sitemap.
 const redirectSources = new Set();
-for (const f of ['SITE-REDIRECTS.txt', 'BLOG-REDIRECTS.txt', 'LEGAL-REDIRECTS.txt']) {
+for (const f of fs.readdirSync(ROOT).filter((f) => /-REDIRECTS\.txt$/.test(f))) {
   const p = path.join(ROOT, f);
   if (!fs.existsSync(p)) continue;
   for (const line of fs.readFileSync(p, 'utf8').split('\n')) {

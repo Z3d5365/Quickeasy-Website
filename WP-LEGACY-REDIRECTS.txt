@@ -1,0 +1,87 @@
+# WordPress legacy redirects (apply as 301 at host)
+# Format: OLD-PATH  ->  NEW-PATH   # note
+#
+# Sourced by diffing the live Yoast sitemaps (post + page + category, 296 indexed URLs)
+# against the rebuilt sitemap.xml and the SITE-/BLOG-/LEGAL- logs. Everything here is a
+# URL Google still has indexed that the rebuild did not otherwise account for; without
+# these rules each one 404s on cutover day.
+#
+# Deliberately NOT redirected, so they return a clean 404: /feed/, /wp-json/,
+# /xmlrpc.php and other WordPress plumbing. Redirecting a non-equivalent URL to an
+# unrelated page is read as a soft 404 and is worse than a real 404.
+#
+# Note: /th/thailand/ has no Thai equivalent because the Thai tree has no regional
+# Thailand page (it has /th/south-africa/, /th/eastern-europe/, /th/middle-east/).
+# Pointing at the English /thailand/ is the closest content match; revisit if a Thai
+# regional page is written.
+
+# --- WordPress category archives -> the matching /blog/ topic anchor ---
+/category/accounting-software/                                                                                                                                                                                           ->  /blog/#financial-accounting
+/category/business/                                                                                                                                                                                                      ->  /blog/#business-growth-leadership
+/category/cloud-based-erp/                                                                                                                                                                                               ->  /blog/#cloud-data-technology
+/category/erp/                                                                                                                                                                                                           ->  /blog/#erp-business-systems
+/category/erp-implementation/                                                                                                                                                                                            ->  /blog/#erp-business-systems
+/category/manufacturing/                                                                                                                                                                                                 ->  /blog/#production-manufacturing
+/category/printing-software/                                                                                                                                                                                             ->  /blog/#industries-verticals
+/category/production-planning/                                                                                                                                                                                           ->  /blog/#production-manufacturing
+/category/uncategorized/                                                                                                                                                                                                 ->  /blog/   # no meaningful topic match
+
+# --- Thai category archives ---
+/th/category/business-th/                                                                                                                                                                                                ->  /th/blog/#business-growth-leadership
+/th/category/erp-implementation-th/                                                                                                                                                                                      ->  /th/blog/#erp-business-systems
+/th/category/manufacturing-th/                                                                                                                                                                                           ->  /th/blog/#production-manufacturing
+/th/category/uncategorized-th/                                                                                                                                                                                           ->  /th/blog/
+
+# --- Legacy Thai tree (old WP /th/ pages; the rebuild uses different slugs) ---
+/th/home/                                                                                                                                                                                                                ->  /th/
+/th/bos-overview/                                                                                                                                                                                                        ->  /th/business-operating-system/
+/th/bos-erp-copy-2/                                                                                                                                                                                                      ->  /th/business-operating-system/   # WP duplicate of the BOS page
+/th/articles/                                                                                                                                                                                                            ->  /th/blog/
+/th/accounting-tutorials/                                                                                                                                                                                                ->  /th/blog/
+/th/sql-tutorials/                                                                                                                                                                                                       ->  /th/blog/
+/th/templates-and-design/                                                                                                                                                                                                ->  /th/blog/
+/th/become-a-referral-partner/                                                                                                                                                                                           ->  /th/contact-us/
+/th/become-a-distributor/                                                                                                                                                                                                ->  /th/contact-us/
+/th/thailand/                                                                                                                                                                                                            ->  /thailand/   # no Thai regional page exists yet - see note below
+
+# --- Thai legal pages (legal is intentionally English-only, see CLAUDE.md) ---
+/th/popia-policy/                                                                                                                                                                                                        ->  /popia-policy/
+/th/website-privacy-policy/                                                                                                                                                                                              ->  /popia-policy/
+/th/application-privacy-policy/                                                                                                                                                                                          ->  /popia-policy/
+/th/website-cookie-policy/                                                                                                                                                                                               ->  /website-policy/
+/th/terms-of-use/                                                                                                                                                                                                        ->  /website-policy/
+/th/application-terms-of-use/                                                                                                                                                                                            ->  /software-policy/
+/th/terms-of-engagement/                                                                                                                                                                                                 ->  /software-policy/
+
+# --- Thai posts with Thai slugs, rebuilt under the English slug ---
+/th/2025/01/14/%e0%b8%9a%e0%b8%a3%e0%b8%b4%e0%b8%a9%e0%b8%b1%e0%b8%97%e0%b8%9b%e0%b9%89%e0%b8%b2%e0%b8%a2%e0%b9%82%e0%b8%86%e0%b8%a9%e0%b8%93%e0%b8%b2-%e0%b8%ad%e0%b8%b1%e0%b8%9e%e0%b9%80%e0%b8%81%e0%b8%a3%e0%b8%94/  ->  /th/2025/01/14/signage-companies-upgrade-to-this-single-system-in-2025/
+/th/2025/02/21/%e0%b8%a7%e0%b8%b4%e0%b8%98%e0%b8%b5%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b9%80%e0%b8%9b%e0%b9%87%e0%b8%99%e0%b8%9c%e0%b8%b9%e0%b9%89%e0%b9%80%e0%b8%8a%e0%b8%b5%e0%b9%88%e0%b8%a2%e0%b8%a7%e0%b8%8a%e0%b8%b2/   ->  /th/2025/02/21/how-to-master-multi-level-boms/
+/th/2025/03/17/%e0%b8%9a%e0%b8%ad%e0%b8%81%e0%b8%a5%e0%b8%b2%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%9a%e0%b8%b1%e0%b8%8d%e0%b8%8a%e0%b8%b5%e0%b9%81%e0%b8%9a%e0%b8%9a%e0%b9%84%e0%b8%8b%e0%b9%82%e0%b8%a5%e0%b8%94/   ->  /th/2025/03/17/say-goodbye-to-accounting-silos-with-erp/
+
+# --- WordPress drafts and duplicates ---
+/bos-overview-old/                                                                                                                                                                                                       ->  /business-operating-system/
+/home_old/                                                                                                                                                                                                               ->  /
+/pricing-faq/                                                                                                                                                                                                            ->  /pricing/
+/thank-you/                                                                                                                                                                                                              ->  /contact-us/   # contact-form thank-you page
+
+# --- Retired Yoast sitemaps (live robots.txt still advertises sitemap_index.xml) ---
+/sitemap_index.xml                                                                                                                                                                                                       ->  /sitemap.xml
+/post-sitemap.xml                                                                                                                                                                                                        ->  /sitemap.xml
+/page-sitemap.xml                                                                                                                                                                                                        ->  /sitemap.xml
+/category-sitemap.xml                                                                                                                                                                                                    ->  /sitemap.xml
+
+# --- Thai twins of the BLOG-REDIRECTS.txt prunes/merges ---
+/th/2025/11/11/software-features-dont-make-you-profitable-processes-do/                                                                                                                                                  ->  /th/2025/11/28/software-features-dont-make-you-profitable-better-business-processes-do/   # Software Features Don’t Make You Profitable… Processes Do
+/th/2022/01/07/how-erp-benefits-industry-4-0-in-the-manufacturing-industry/                                                                                                                                              ->  /th/2022/01/07/understanding-industry-4-0-and-erp-in-the-manufacturing-industry/   # How ERP Benefits Industry 4.0 in the Manufacturing Industry
+/th/2022/01/09/manufacturers-4-ways-to-survive-the-pre-christmas-chaos/                                                                                                                                                  ->  /th/2022/01/09/how-your-manufacturing-business-can-survive-the-pre-christmas-chaos/   # Manufacturers: 4 Ways to Survive the Pre-Christmas Chaos
+/th/2022/01/09/survive-the-pre-christmas-madness/                                                                                                                                                                        ->  /th/2022/01/09/how-your-manufacturing-business-can-survive-the-pre-christmas-chaos/   # Survive the pre-Christmas madness
+/th/2022/01/06/the-lingering-effects-of-covid-19-on-business-and-how-to-survive-and-thrive-in-2022/                                                                                                                      ->  /th/blog/   # Covid 19 - Business and Beyond
+/th/2022/01/07/business-survival-tips-for-covid-19-and-eskom/                                                                                                                                                            ->  /th/blog/   # Business survival tips for Covid-19 and Eskom
+/th/2022/01/06/warehousing-post-pandemic-goes-digital-in-2021/                                                                                                                                                           ->  /th/blog/   # Warehousing Post-Pandemic Goes Digital in 2021
+/th/2022/01/07/clean-up-your-business-and-improve-potential-profit-in-2020/                                                                                                                                              ->  /th/blog/   # Clean Up Your Business and Improve Potential Profit in 2020
+/th/2022/01/07/set-yourself-up-for-success-in-2021-with-these-changes/                                                                                                                                                   ->  /th/blog/   # Set Yourself Up for Success in 2021 with These Changes
+/th/2022/01/07/using-erp-for-20-20-business-vision-for-2020/                                                                                                                                                             ->  /th/blog/   # Use ERP for 2020 vision
+/th/2022/01/06/how-to-be-well-prepared-for-plant-shutdown-this-festive-season-with-erp/                                                                                                                                  ->  /th/blog/   # How to be well-prepared for plant shutdown this festive season with ERP
+/th/2022/01/09/business-owner-no-time-to-go-away-this-holiday/                                                                                                                                                           ->  /th/blog/   # Business Owner: No time to Go Away this Holiday?
+/th/2022/01/09/3-guaranteed-ways-to-run-a-leaner-meaner-sme-this-winter/                                                                                                                                                 ->  /th/blog/   # 3 Guaranteed Ways to Run a Leaner, Meaner SME this Winter
+/th/2022/01/06/we-must-rebuild-now-how-manufacturers-and-engineering-companies-are-using-tech-to-recover/                                                                                                                ->  /th/blog/   # How Manufacturers Use ERP to Recover Post-Pandemic

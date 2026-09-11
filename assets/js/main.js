@@ -57,13 +57,12 @@
   var RELAY_URL = "https://e2b3gbknj0.execute-api.eu-west-1.amazonaws.com/contact";
   var SITE_NAME = "quickeasysoftware.com";
 
-  // All submissions currently route to the shared dev inbox.
+  // Live/test switch: the live domain gets its own mail, everywhere else
+  // (staging, localhost, preview hosts) keeps going to the dev inbox.
   function recipientFor() {
+    var h = location.hostname;
+    if (h === "quickeasysoftware.com" || h === "www.quickeasysoftware.com") return "info@quickeasysoftware.com";
     return "info@vibecraftedsoftware.com";
-    // Live/test switch (restore when quickeasysoftware.com should get its own mail):
-    // var h = location.hostname;
-    // if (h === "quickeasysoftware.com" || h === "www.quickeasysoftware.com") return "info@quickeasysoftware.com";
-    // return "info@vibecraftedsoftware.com";
   }
 
   document.querySelectorAll("form.contact-form").forEach(function (form) {
