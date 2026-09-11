@@ -125,9 +125,19 @@ p{margin:0 0 1em}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;box-shadow:var(--shadow-sm)}
 .card h3{font-size:19px;margin:0 0 10px}
 .card p{margin:0;font-size:15px;color:var(--body)}
-/* partner/distributor logos: one box so marks read at the same optical size.
-   Source PNGs are trimmed to the artwork — no baked-in whitespace. */
-.partner-logo{height:72px;width:auto;max-width:190px;object-fit:contain;display:block;margin:0 auto 16px}
+/* partner/distributor logos (South Africa region pages): one box so marks read
+   at the same optical size. Source PNGs are trimmed to the artwork — no
+   baked-in whitespace.
+   Height is held at 48px because the sources are small: three came from
+   WordPress 150x150 circle crops and the smallest artwork is only 55px tall
+   (erp-software-consult 96x55, savvy-business 80x70, quickeasy-sa 78x78). At
+   the old 72px every mark was upscaled on a 2x display — up to 2.6x — and went
+   visibly soft. 48px keeps four of the six at or near 1:1 there. max-width is
+   170px so the widest mark (revel-africa, 300x91 -> 158px at this height)
+   still reaches full height instead of being clamped shorter than its
+   neighbours. Going crisper than this needs higher-resolution source files,
+   not smaller CSS. */
+.partner-logo{height:48px;width:auto;max-width:170px;object-fit:contain;display:block;margin:0 auto 16px}
 .card__ico{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--red-wash);color:var(--red);margin-bottom:18px}
 .card__ico svg{width:24px;height:24px}
 .clients{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:34px 50px;margin-top:36px}
