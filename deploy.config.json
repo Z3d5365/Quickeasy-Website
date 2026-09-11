@@ -1,10 +1,13 @@
 {
   "_comment": [
     "Deploy targets for this site (web-builder-skills:website-deployment).",
-    "STAGING ONLY. quickeasysoftware.com is still served by the live WordPress host",
-    "(nginx, wp-json, third-party CloudFront) — not by this AWS account. There is no",
-    "Route 53 hosted zone and no CloudFront distribution for the domain here, so the",
-    "cutover described in the deployment skill has not happened yet."
+    "Consumed by deploy.mjs — run it with `npm run deploy`.",
+    "",
+    "STAGING until the cutover. quickeasysoftware.com is still served by WordPress via a",
+    "CloudFront distribution in the second AWS account; the hosted zone lives there too,",
+    "alongside live systems (bos-api, elsumo-api, the bospro/bosent tenants, docs, mail,",
+    "portal, app). The cutover moves the apex + www aliases onto our distribution and",
+    "repoints two records — it does NOT migrate the zone."
   ],
   "domain": "quickeasysoftware.com",
   "environment": "staging",
@@ -20,14 +23,23 @@
   },
   "cacheControl": {
     "_comment": [
-      "No CloudFront in front of this bucket means no create-invalidation step, so the",
-      "skill's long immutable asset TTL is not safe for files that change in place.",
-      "main.css / main.js keep a short revalidating cache; images and fonts stay",
-      "immutable (a changed image gets a new filename)."
+      "With no CloudFront there is no create-invalidation step, so a long immutable TTL",
+      "is unsafe for files that change in place under the same name. Images are immutable",
+      "(a changed image gets a new filename); css/js revalidate every 5 minutes.",
+      "Once cloudfrontDistributionId is set, deploy.mjs invalidates on every deploy and",
+      "the css/js group can move to the immutable value."
     ],
-    "assets/img, assets/fonts, assets/ext": "public,max-age=31536000,immutable",
-    "assets/css, assets/js": "public,max-age=300,must-revalidate",
-    "html and root files": "public,max-age=300"
+    "immutable": {
+      "paths": ["assets/img"],
+      "value": "public,max-age=31536000,immutable"
+    },
+    "revalidate": {
+      "paths": ["assets/css", "assets/js"],
+      "value": "public,max-age=300,must-revalidate"
+    },
+    "pages": {
+      "value": "public,max-age=300"
+    }
   },
   "exclude": [
     ".git/*",
@@ -40,12 +52,12 @@
     "seo/*",
     "deploy.config.json"
   ],
+  "verifyPaths": ["/", "/pricing/", "/th/", "/blog/"],
   "notes": [
-    "The exclude list keeps dev artifacts off the public endpoint — they are not pages,",
-    "and deploy.config.json in particular should not be readable there. Note that adding",
-    "an --exclude does NOT remove a file already in the bucket: sync applies filters to",
-    "the destination too, so --delete skips excluded keys. Anything already published has",
-    "to be removed with an explicit `aws s3 rm <key>`.",
+    "The exclude list keeps dev artifacts off the public endpoint. Note that adding an",
+    "--exclude does NOT remove a file already in the bucket: sync applies filters to the",
+    "destination too, so --delete skips excluded keys. Anything already published has to",
+    "be removed with an explicit `aws s3 rm <key>`.",
     "Every page canonicalises to https://quickeasysoftware.com/..., which is what keeps",
     "the public staging endpoint from competing with the live site in search."
   ]

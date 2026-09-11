@@ -4,6 +4,8 @@
   "private": true,
   "description": "Static marketing site for QuickEasy Software (plain HTML/CSS/JS, no build step). This package.json exists only so `npm test` can run the dependency-free test suite; the site itself has no dependencies and no build.",
   "scripts": {
-    "test": "node test/site-check.mjs"
+    "test": "node test/site-check.mjs",
+    "deploy": "node deploy.mjs",
+    "deploy:dry": "node deploy.mjs --dry-run"
   }
 }
