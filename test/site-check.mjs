@@ -581,8 +581,12 @@ test('M5 seo/redirects.json is in sync with redirect-map.csv', () => {
   if (!fs.existsSync(f)) return ['seo/redirects.json missing — run node seo/gen-kvs-redirects.mjs'];
   const rows = redirectRows();
   if (!rows) return [];
-  let kvs;
-  try { kvs = JSON.parse(read(f)); } catch (e) { return ['seo/redirects.json is not valid JSON: ' + e.message]; }
+  let parsed;
+  try { parsed = JSON.parse(read(f)); } catch (e) { return ['seo/redirects.json is not valid JSON: ' + e.message]; }
+  // CloudFront KVS import shape: {"data":[{"key":…,"value":…}]}
+  if (!parsed || !Array.isArray(parsed.data))
+    return ['seo/redirects.json is not in KVS import shape ({"data":[{key,value}]})'];
+  const kvs = Object.fromEntries(parsed.data.map((e) => [e.key, e.value]));
   const errs = [];
   for (const [from, to] of rows) {
     if (kvs[from] === undefined) errs.push(`${from} missing from redirects.json — regenerate it`);

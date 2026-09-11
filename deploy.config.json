@@ -3,39 +3,57 @@
     "Deploy targets for this site (web-builder-skills:website-deployment).",
     "Consumed by deploy.mjs — run it with `npm run deploy`.",
     "",
-    "STAGING until the cutover. quickeasysoftware.com is still served by WordPress via a",
-    "CloudFront distribution in the second AWS account; the hosted zone lives there too,",
-    "alongside live systems (bos-api, elsumo-api, the bospro/bosent tenants, docs, mail,",
-    "portal, app). The cutover moves the apex + www aliases onto our distribution and",
-    "repoints two records — it does NOT migrate the zone."
+    "PRE-CUTOVER. The CloudFront distribution below is built and serving the real",
+    "content, but it only answers to the staging alias. quickeasysoftware.com and www",
+    "are still claimed by distribution E2RXDDD1LJ0WFC in account 673190877114 (origin:",
+    "mywebsite.quickeasysoftware.com, i.e. WordPress). The cutover is `aws cloudfront",
+    "associate-alias` to move those two names onto this distribution, then repointing",
+    "the two alias records. The hosted zone itself does NOT move — it carries live mail",
+    "and the BOS cloud endpoints."
   ],
   "domain": "quickeasysoftware.com",
-  "environment": "staging",
+  "environment": "pre-cutover",
   "aws": {
     "account": "951226407726",
     "region": "ap-southeast-1",
     "bucket": "site-quickeasysoftware-com",
-    "serving": "s3-website",
-    "url": "http://site-quickeasysoftware-com.s3-website-ap-southeast-1.amazonaws.com",
-    "cloudfrontDistributionId": null,
-    "route53HostedZoneId": null,
-    "acmCertificateArn": null
+    "serving": "cloudfront-oac",
+    "url": "https://qes-stage.vibecraftedsoftware.com",
+    "liveUrl": "https://quickeasysoftware.com",
+    "cloudfrontDistributionId": "E12M2ABYP4FGX4",
+    "cloudfrontDomainName": "d27nxwqhux4sy2.cloudfront.net",
+    "originAccessControlId": "E1U226NAF0RAHO",
+    "acmCertificateArn": "arn:aws:acm:us-east-1:951226407726:certificate/be57be25-0c04-4da0-a1b8-872032aa0b13",
+    "keyValueStoreArn": "arn:aws:cloudfront::951226407726:key-value-store/7f304362-3185-4005-856f-3a96d957366a",
+    "edgeFunction": "quickeasy-edge-router"
+  },
+  "dns": {
+    "_comment": [
+      "The zone lives in a second account. Assume the cross-account role to touch it:",
+      "  aws --profile qes-dns route53 ...",
+      "Records NOT to touch: MX, SPF, the three DKIM selector groups (google._domainkey,",
+      "k2/k3 for Mailchimp, and eight random-selector SES CNAMEs), _dmarc, _amazonses,",
+      "and every bos*/dev*/portal/app/docs/mail/login/lambda host."
+    ],
+    "account": "673190877114",
+    "hostedZoneId": "Z103297610N4K9Y2JPVC8",
+    "roleArn": "arn:aws:iam::673190877114:role/quickeasy_dns_access",
+    "profile": "qes-dns",
+    "incumbentApexDistribution": "E2RXDDD1LJ0WFC",
+    "incumbentApexTarget": "d2lsofoemw2whl.cloudfront.net",
+    "incumbentWwwTarget": "d57qwkc58nyzi.cloudfront.net",
+    "wordpressOrigin": "mywebsite.quickeasysoftware.com"
   },
   "cacheControl": {
     "_comment": [
-      "With no CloudFront there is no create-invalidation step, so a long immutable TTL",
-      "is unsafe for files that change in place under the same name. Images are immutable",
-      "(a changed image gets a new filename); css/js revalidate every 5 minutes.",
-      "Once cloudfrontDistributionId is set, deploy.mjs invalidates on every deploy and",
-      "the css/js group can move to the immutable value."
+      "deploy.mjs invalidates /* on every deploy, which is what makes a long immutable",
+      "TTL safe despite unhashed filenames — the invalidation, not the header, is what",
+      "forces a re-fetch. If the distribution ever goes away, drop css/js back to a short",
+      "revalidating value or a CSS fix will be invisible to returning visitors."
     ],
     "immutable": {
-      "paths": ["assets/img"],
+      "paths": ["assets/img", "assets/css", "assets/js"],
       "value": "public,max-age=31536000,immutable"
-    },
-    "revalidate": {
-      "paths": ["assets/css", "assets/js"],
-      "value": "public,max-age=300,must-revalidate"
     },
     "pages": {
       "value": "public,max-age=300"
@@ -50,15 +68,21 @@
     "*-REDIRECTS.txt",
     "test/*",
     "seo/*",
+    "infra/*",
     "deploy.config.json"
   ],
-  "verifyPaths": ["/", "/pricing/", "/th/", "/blog/"],
+  "verifyPaths": ["/", "/pricing/", "/th/", "/blog/", "/south-africa/"],
   "notes": [
     "The exclude list keeps dev artifacts off the public endpoint. Note that adding an",
     "--exclude does NOT remove a file already in the bucket: sync applies filters to the",
     "destination too, so --delete skips excluded keys. Anything already published has to",
     "be removed with an explicit `aws s3 rm <key>`.",
-    "Every page canonicalises to https://quickeasysoftware.com/..., which is what keeps",
-    "the public staging endpoint from competing with the live site in search."
+    "The bucket is private: Block Public Access fully on, BucketOwnerEnforced, no website",
+    "hosting, readable only by this distribution via OAC. There is no S3 website endpoint",
+    "any more — test through CloudFront.",
+    "A /wp-content/* cache behaviour points at the WordPress origin with the AllViewer",
+    "origin request policy, so indexed image URLs and third-party hot-links keep working",
+    "after the cutover. Remove it once Search Console stops reporting hits, and note it",
+    "depends on mywebsite.quickeasysoftware.com continuing to resolve."
   ]
 }

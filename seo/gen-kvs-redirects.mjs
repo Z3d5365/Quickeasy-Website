@@ -91,10 +91,12 @@ if (chains.length) {
   process.exit(1);
 }
 
-const obj = {};
-for (const k of [...map.keys()].sort()) obj[k] = map.get(k);
+// CloudFront's KVS --import-source wants {"data":[{"key":…,"value":…}]}, not flat
+// pairs. This file has exactly one consumer (create-key-value-store), so it is
+// written in that shape rather than translated at import time.
+const data = [...map.keys()].sort().map((key) => ({ key, value: map.get(key) }));
 
-fs.writeFileSync(OUT, JSON.stringify(obj, null, 2) + '\n');
+fs.writeFileSync(OUT, JSON.stringify({ data }, null, 2) + '\n');
 const bytes = fs.statSync(OUT).size;
 console.log(
   `Wrote seo/redirects.json with ${map.size} keys from ${rows.length} rules ` +
