@@ -40,7 +40,31 @@ async function liveUrls() {
   return urls;
 }
 
+// Optional: --resolve <ip> pins the hostname to an IP, bypassing the local resolver.
+// Right after a cutover the local/ISP resolver is often still holding the old answer
+// (or a negative cache), which would fail every URL here for reasons that have nothing
+// to do with the site. curl does the pinning; Node's fetch has no public API for it.
+const pinIndex = process.argv.indexOf('--resolve');
+const pinIp = pinIndex !== -1 ? process.argv[pinIndex + 1] : null;
+const hostOf = (u) => new URL(u).hostname;
+
 async function head(url) {
+  if (pinIp) {
+    const { execFile } = await import('node:child_process');
+    return new Promise((resolve) => {
+      execFile(
+        'curl',
+        ['-sI', '-m', '25', '--resolve', `${hostOf(url)}:443:${pinIp}`,
+         '-o', process.platform === 'win32' ? 'NUL' : '/dev/null',
+         '-w', '%{http_code} %{redirect_url}', url],
+        (err, stdout) => {
+          if (err) return resolve({ status: 0, error: err.message });
+          const [code, loc] = stdout.trim().split(' ');
+          resolve({ status: Number(code), location: loc || null });
+        }
+      );
+    });
+  }
   try {
     const r = await fetch(url, { method: 'HEAD', redirect: 'manual' });
     return { status: r.status, location: r.headers.get('location') };

@@ -1,25 +1,22 @@
 {
   "_comment": [
     "Deploy targets for this site (web-builder-skills:website-deployment).",
-    "Consumed by deploy.mjs — run it with `npm run deploy`.",
+    "Consumed by deploy.mjs - run it with `npm run deploy`.",
     "",
-    "PRE-CUTOVER. The CloudFront distribution below is built and serving the real",
-    "content, but it only answers to the staging alias. quickeasysoftware.com and www",
-    "are still claimed by distribution E2RXDDD1LJ0WFC in account 673190877114 (origin:",
-    "mywebsite.quickeasysoftware.com, i.e. WordPress). The cutover is `aws cloudfront",
-    "associate-alias` to move those two names onto this distribution, then repointing",
-    "the two alias records. The hosted zone itself does NOT move — it carries live mail",
-    "and the BOS cloud endpoints."
+    "LIVE. quickeasysoftware.com and www are served by the CloudFront distribution below,",
+    "from a private OAC-only bucket. The old WordPress distribution E2RXDDD1LJ0WFC in",
+    "account 673190877114 is disabled and no longer holds the aliases; its origin",
+    "mywebsite.quickeasysoftware.com is still up and is both the rollback target",
+    "(infra/rollback.mjs) and the origin for the /wp-content/* behaviour. Do not delete it."
   ],
   "domain": "quickeasysoftware.com",
-  "environment": "pre-cutover",
+  "environment": "production",
   "aws": {
     "account": "951226407726",
     "region": "ap-southeast-1",
     "bucket": "site-quickeasysoftware-com",
     "serving": "cloudfront-oac",
-    "url": "https://qes-stage.vibecraftedsoftware.com",
-    "liveUrl": "https://quickeasysoftware.com",
+    "url": "https://quickeasysoftware.com",
     "cloudfrontDistributionId": "E12M2ABYP4FGX4",
     "cloudfrontDomainName": "d27nxwqhux4sy2.cloudfront.net",
     "originAccessControlId": "E1U226NAF0RAHO",
@@ -52,7 +49,11 @@
       "revalidating value or a CSS fix will be invisible to returning visitors."
     ],
     "immutable": {
-      "paths": ["assets/img", "assets/css", "assets/js"],
+      "paths": [
+        "assets/img",
+        "assets/css",
+        "assets/js"
+      ],
       "value": "public,max-age=31536000,immutable"
     },
     "pages": {
@@ -71,7 +72,13 @@
     "infra/*",
     "deploy.config.json"
   ],
-  "verifyPaths": ["/", "/pricing/", "/th/", "/blog/", "/south-africa/"],
+  "verifyPaths": [
+    "/",
+    "/pricing/",
+    "/th/",
+    "/blog/",
+    "/south-africa/"
+  ],
   "notes": [
     "The exclude list keeps dev artifacts off the public endpoint. Note that adding an",
     "--exclude does NOT remove a file already in the bucket: sync applies filters to the",

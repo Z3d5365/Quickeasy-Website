@@ -78,7 +78,17 @@ async function handler(event) {
   var folderish = !endsWithSlash(uri) && !hasExtension(uri);
 
   // 2. Legacy redirect map. Probe the URI as asked for, then its slashed twin.
+  //    Percent-encoding is case-insensitive and clients normalise the hex digits to
+  //    uppercase, but WordPress published these paths lowercase — so also probe an
+  //    uppercase-normalised form rather than relying on the map holding every case.
   var candidates = folderish ? [uri, uri + '/'] : [uri];
+  if (uri.indexOf('%') !== -1) {
+    var upper = uri.replace(/%[0-9a-f]{2}/g, function (m) { return m.toUpperCase(); });
+    if (upper !== uri) {
+      candidates.push(upper);
+      if (folderish) candidates.push(upper + '/');
+    }
+  }
   for (var i = 0; i < candidates.length; i++) {
     try {
       var target = await kvs.get(candidates[i]);

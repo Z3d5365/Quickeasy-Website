@@ -61,8 +61,13 @@ for (const [from, to] of rows) {
     }
   }
 
-  // A percent-encoded source is also worth holding in decoded form, and vice versa.
+  // Percent-encoding is case-insensitive (RFC 3986) and normalisers are told to
+  // UPPERCASE the hex digits. WordPress published these URLs lowercase, so that is
+  // what is indexed, but curl, Googlebot and most clients send %E0 where the sitemap
+  // says %e0. Hold every form: as published, uppercase-normalised, and decoded.
   for (const v of [...variants]) {
+    const upper = v.replace(/%[0-9a-f]{2}/g, (m) => m.toUpperCase());
+    if (upper !== v) variants.add(upper);
     try {
       const decoded = decodeURI(v);
       if (decoded !== v) variants.add(decoded);
