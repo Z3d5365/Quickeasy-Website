@@ -116,8 +116,8 @@ This is a same-domain WordPress→static migration of an already-ranking site
   `/blog/`'s 8 topic categories, reusing each post's already-translated title/date, and
   every Thai page's Blogs nav submenu + each post's "back to all blogs" link point at
   it. Thai marketing/blog copy is a machine-drafted first pass — **flag for
-  native-speaker review** before launch. Thai contact: QuickEasy Asia,
-  nim.pattraporn@quickeasysoftware.com, +66 (0) 92 849 4555.
+  native-speaker review** before launch. Thai contact (Thailand distribution partner): Vibe Crafted Software,
+  Pattraporn (Nim) Thiamjai, info@vibecraftedsoftware.com, +66 (0) 92 849 4555.
 
 ## Conventions
 

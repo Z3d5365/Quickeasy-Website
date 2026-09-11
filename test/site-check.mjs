@@ -187,15 +187,20 @@ test('F1 homepage', () => {
 });
 
 // The Apps page was removed — the nav item now links out to the apps site.
-test('F2 Apps links point off-site, not at a local /apps/ page', () => {
+test('F2 no Apps page and no Apps nav item', () => {
   const errs = [];
   if (fs.existsSync(path.join(ROOT, 'apps'))) errs.push('apps/ should be gone (301 -> /)');
   if (fs.existsSync(path.join(ROOT, 'th/apps'))) errs.push('th/apps/ should be gone (301 -> /th/)');
   for (const p of pages) {
     if (p.html.includes('href="/apps/') || p.html.includes('href="/th/apps/')) errs.push(p.rel + ' still links to a local apps page');
+    // Apps was dropped from the top nav and the footer; the homepage keeps a
+    // single outbound CTA to the apps site in its "Extend BOS with apps" section.
+    if (/>(Apps|\u0e41\u0e2d\u0e1b)<\/a><\/li>/.test(p.html)) errs.push(p.rel + ' still has an Apps menu item');
   }
-  const missing = navPages.filter((p) => !p.html.includes('href="https://www.vibecraftedsoftware.com"'));
-  if (missing.length) errs.push(missing.length + ' nav pages lack the external Apps link, e.g. ' + missing[0].rel);
+  const home = get('index.html');
+  if (home && !home.html.includes('https://www.vibecraftedsoftware.com')) {
+    errs.push('homepage lost its link to the apps site');
+  }
   return errs;
 });
 
@@ -256,32 +261,45 @@ test('G2 main.js has nav, contact form and currency toggle', () => {
    except a plan carrying a published data-usd override, which shows that
    fixed price instead of the computed conversion)
    ========================================================================= */
-test('H published prices match on both pricing pages', () => {
+test('H published prices', () => {
   const js = read(path.join(ROOT, 'assets/js/main.js'));
   const errs = [];
-  if (js.includes('THB')) errs.push('THB still in main.js');
+  if (js.includes('THB')) errs.push('THB still in the main.js currency table');
   const usdRate = parseFloat((js.match(/USD:\s*\{\s*rate:\s*([\d.]+)/) || [])[1]);
   if (usdRate !== 0.056) errs.push('USD fallback rate changed: ' + usdRate);
-  // The published table: ZAR is the invoiced price, USD the published equivalent.
-  // ZAR values must stay identical to the pre-migration site.
+
+  // EN page: ZAR is the invoiced price (identical to the pre-migration site),
+  // USD the published equivalent. Every price carries both.
   const published = [
-    [1230, 76], [820, 50],                                    // Solo, Team
+    [1230, 76], [820, 50],                                      // Solo, Team
     [499, 31], [927, 57], [1480, 91], [2746, 170], [5153, 318], // cloud server
-    [89, 5], [185, 10],                                       // Winflector, RDP
+    [89, 5], [185, 10],                                         // Winflector, RDP
   ];
-  for (const rel of ['pricing/index.html', 'th/pricing/index.html']) {
-    const page = get(rel);
-    if (!page) { errs.push(rel + ' missing'); continue; }
+  const en = get('pricing/index.html');
+  if (!en) errs.push('pricing/index.html missing');
+  else {
     for (const [zar, usd] of published) {
-      if (!page.html.includes('data-zar="' + zar + '" data-usd="' + usd + '"')) {
-        errs.push(rel + ': R' + zar + ' / $' + usd + ' not published');
+      if (!en.html.includes('data-zar="' + zar + '" data-usd="' + usd + '"')) {
+        errs.push('pricing/index.html: R' + zar + ' / $' + usd + ' not published');
       }
     }
-    // Every price on these pages is published in both currencies, never computed.
-    const zars = count(page.html, /data-zar="/g);
-    const usds = count(page.html, /data-usd="/g);
-    if (zars !== usds) errs.push(rel + ': ' + zars + ' ZAR prices but ' + usds + ' USD overrides');
-    if (zars !== published.length) errs.push(rel + ': expected ' + published.length + ' prices, found ' + zars);
+    const zars = count(en.html, /data-zar="/g);
+    const usds = count(en.html, /data-usd="/g);
+    if (zars !== usds) errs.push('pricing/index.html: ' + zars + ' ZAR prices but ' + usds + ' USD overrides');
+    if (zars !== published.length) errs.push('pricing/index.html: expected ' + published.length + ' prices, found ' + zars);
+  }
+
+  // TH page: one THB price only — no tiers, no cloud servers, no toggle.
+  const th = get('th/pricing/index.html');
+  if (!th) errs.push('th/pricing/index.html missing');
+  else {
+    if (!th.html.includes('\u0e3f1,495')) errs.push('th/pricing: THB1,495 not shown');
+    if (!th.html.includes('"price": "1495"') || !th.html.includes('"priceCurrency": "THB"')) {
+      errs.push('th/pricing: THB offer missing from JSON-LD');
+    }
+    if (count(th.html, /class="price"/g) !== 1) errs.push('th/pricing: expected exactly one price');
+    if (th.html.includes('currency-toggle')) errs.push('th/pricing: currency toggle should be gone');
+    if (th.html.includes('data-zar=')) errs.push('th/pricing: ZAR prices should be gone');
   }
   return errs;
 });
