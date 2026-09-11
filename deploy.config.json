@@ -1,0 +1,52 @@
+{
+  "_comment": [
+    "Deploy targets for this site (web-builder-skills:website-deployment).",
+    "STAGING ONLY. quickeasysoftware.com is still served by the live WordPress host",
+    "(nginx, wp-json, third-party CloudFront) — not by this AWS account. There is no",
+    "Route 53 hosted zone and no CloudFront distribution for the domain here, so the",
+    "cutover described in the deployment skill has not happened yet."
+  ],
+  "domain": "quickeasysoftware.com",
+  "environment": "staging",
+  "aws": {
+    "account": "951226407726",
+    "region": "ap-southeast-1",
+    "bucket": "site-quickeasysoftware-com",
+    "serving": "s3-website",
+    "url": "http://site-quickeasysoftware-com.s3-website-ap-southeast-1.amazonaws.com",
+    "cloudfrontDistributionId": null,
+    "route53HostedZoneId": null,
+    "acmCertificateArn": null
+  },
+  "cacheControl": {
+    "_comment": [
+      "No CloudFront in front of this bucket means no create-invalidation step, so the",
+      "skill's long immutable asset TTL is not safe for files that change in place.",
+      "main.css / main.js keep a short revalidating cache; images and fonts stay",
+      "immutable (a changed image gets a new filename)."
+    ],
+    "assets/img, assets/fonts, assets/ext": "public,max-age=31536000,immutable",
+    "assets/css, assets/js": "public,max-age=300,must-revalidate",
+    "html and root files": "public,max-age=300"
+  },
+  "exclude": [
+    ".git/*",
+    ".claude/*",
+    "CLAUDE.md",
+    "README.md",
+    "package.json",
+    "*-REDIRECTS.txt",
+    "test/*",
+    "seo/*",
+    "deploy.config.json"
+  ],
+  "notes": [
+    "The exclude list keeps dev artifacts off the public endpoint — they are not pages,",
+    "and deploy.config.json in particular should not be readable there. Note that adding",
+    "an --exclude does NOT remove a file already in the bucket: sync applies filters to",
+    "the destination too, so --delete skips excluded keys. Anything already published has",
+    "to be removed with an explicit `aws s3 rm <key>`.",
+    "Every page canonicalises to https://quickeasysoftware.com/..., which is what keeps",
+    "the public staging endpoint from competing with the live site in search."
+  ]
+}
