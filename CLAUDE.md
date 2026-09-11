@@ -51,12 +51,14 @@ Skills are **drafting aids, not legal advice**; flag attorney review for legal p
 - **Nav & footer are duplicated in every page** (no build system). Change them with a
   one-off Node sweep over all pages, not by hand file-by-file.
 - Contact form: wired to the shared relay (`RELAY_URL` in `main.js`, per
-  `web-builder-skills:contact-form-integration`). Currently **all** submissions
-  route to the dev inbox `info@vibecraftedsoftware.com` regardless of hostname
-  — the hostname-based live/test switch (live `quickeasysoftware.com` →
-  `info@quickeasysoftware.com`, everywhere else → the dev inbox) is written
-  but commented out in `recipientFor()`; restore it when quickeasysoftware.com
-  should start getting its own mail.
+  `web-builder-skills:contact-form-integration`). `recipientFor()` switches on
+  hostname: live `quickeasysoftware.com` / `www.` → `info@quickeasysoftware.com`,
+  everywhere else (staging, localhost, preview hosts) → the dev inbox
+  `info@vibecraftedsoftware.com`. Keep that switch intact — pinning it to the dev
+  inbox silently swallows every live enquiry.
+- `404.html` at the root is the error page, served by CloudFront for both 404 and
+  **403** (S3 behind OAC returns 403 for a missing key). It is `noindex` with no
+  canonical and no JSON-LD, since it answers for every missing URL.
 
 ## Information architecture
 
@@ -80,10 +82,21 @@ This is a same-domain WordPress→static migration of an already-ranking site
   Organization (site-wide, with `areaServed`/`knowsAbout`), WebSite (home),
   BreadcrumbList (inner pages), BlogPosting (posts), SoftwareApplication
   (`/bos-erp/`). Applied by the one-off sweep — carry it forward on any new page.
-- **Redirects:** the human-readable logs are `SITE-/BLOG-/LEGAL-REDIRECTS.txt`;
+- **Redirects:** the human-readable logs are every `*-REDIRECTS.txt` at the root —
+  `SITE-`, `BLOG-`, `LEGAL-` and `WP-LEGACY-` (the last covers URLs still indexed
+  from the WordPress site that the rebuild didn't otherwise account for). The
+  generators and tests discover them by glob, so a new log needs no registration.
+  A `#` starts a comment only at line start or after whitespace, so a target can
+  carry a `#fragment` (the category archives land on `/blog/#topic`).
   `node seo/gen-redirect-map.mjs` consolidates them into `seo/redirect-map.csv`
-  (single-hop 301s, validated for cycles/dupes). **Serving these 301s is the
-  host's job** (`web-builder-skills:website-deployment` at cutover), not the repo.
+  (single-hop 301s, validated for cycles/dupes), then
+  `node seo/gen-kvs-redirects.mjs` turns that into `seo/redirects.json` — the flat
+  map a CloudFront KeyValueStore imports, with slash and percent-encoded variants
+  of every key, because the edge matches the raw `request.uri`. **Serving these
+  301s is the host's job** (`web-builder-skills:website-deployment`), not the repo.
+- Before go-live, keep the gate empty: every URL in the live Yoast sitemaps
+  (`/post-`, `/page-`, `/category-sitemap.xml`) must either exist in the rebuild
+  or be a redirect source. Tests M1–M5 enforce the repo half of this.
 - Every page has a self-referencing canonical (non-www). Don't add `Disallow: /`
   to `robots.txt` — a staging block leaking to production deindexes the site.
 
@@ -129,6 +142,12 @@ This is a same-domain WordPress→static migration of an already-ranking site
 
 - Folder path = live URL (static site served at domain root).
 - Preview locally: `node <scratch>/serve.mjs "C:/Projects/Quickeasy Website"` → http://localhost:8099
+- **Deploy: `npm run deploy`** (`npm run deploy:dry` to see it without changing
+  anything). Driven by `deploy.config.json`: runs `npm test`, refuses if the
+  generated SEO artifacts were stale, syncs by cache-control group, invalidates
+  CloudFront once `cloudfrontDistributionId` is set, then checks a few URLs return
+  200. Don't hand-run `aws s3 sync` — the cache headers and exclude list live in
+  that config for a reason.
 - Legacy WordPress dirs (`wp-admin`, `wp-content/plugins`, `wp-includes`, `wp-json`,
   `xmlrpc.php`, feeds) are being removed — do not add new references to them.
 - Commit messages end with the required `Co-Authored-By` trailer.
