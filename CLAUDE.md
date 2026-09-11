@@ -39,6 +39,12 @@ Skills are **drafting aids, not legal advice**; flag attorney review for legal p
 - `assets/css/main.css` — design system (tokens, header/nav, footer, sections, cards,
   pricing, forms). One central stylesheet per the build-standards skill.
   (`assets/css/legal.css` is the one allowed second sheet, for legal pages only.)
+- **Section bands alternate** white / paper / white down every page. The hero's
+  gradient ends on paper, so it counts as a grey band and the first section under it
+  must be white. Tone comes from `section--paper` alone; `section--ink` only adds the
+  rules top and bottom, so a grey emphasis band is `section section--paper section--ink`.
+  Enforced by `test/site-check.mjs` (L1–L3) — never patch it with an adjacent-sibling
+  CSS override; fix the page markup.
 - `assets/js/main.js` — vanilla nav, contact-form handler, and pricing currency toggle.
 - `assets/img/…` — brand/hero/client images (relocated off `wp-content`).
 - Pages are plain HTML using these assets with **root-relative** paths (`/assets/…`, `/pricing/`).

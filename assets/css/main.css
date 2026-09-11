@@ -93,10 +93,13 @@ p{margin:0 0 1em}
 
 /* ---------- sections / hero / cards (shared page components) ---------- */
 .section{padding:72px 0}
+/* Bands alternate down the page. The hero gradient ends on paper, so the first
+   section under it is white, then paper, then white, and so on. `--paper` is the
+   only thing that sets a band tone; `--ink` is the emphasis band (rules top and
+   bottom) and takes its tone the same way — pair it with `--paper` when that slot
+   in the alternation is grey. test/site-check.mjs (L1) enforces the alternation. */
 .section--paper{background:var(--paper)}
-.section--ink{background:var(--paper);color:var(--body);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-/* Two grey bands back to back read as one slab — when ink directly follows paper, go white instead */
-main>.section--paper+.section--ink{background:var(--bg)}
+.section--ink{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);margin:0 0 14px}
 .section--ink .eyebrow{color:var(--muted)}
 .h2{font-size:clamp(27px,3.6vw,38px);margin:0 0 14px;text-wrap:balance}
@@ -122,6 +125,9 @@ main>.section--paper+.section--ink{background:var(--bg)}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;box-shadow:var(--shadow-sm)}
 .card h3{font-size:19px;margin:0 0 10px}
 .card p{margin:0;font-size:15px;color:var(--body)}
+/* partner/distributor logos: one box so marks read at the same optical size.
+   Source PNGs are trimmed to the artwork — no baked-in whitespace. */
+.partner-logo{height:72px;width:auto;max-width:190px;object-fit:contain;display:block;margin:0 auto 16px}
 .card__ico{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--red-wash);color:var(--red);margin-bottom:18px}
 .card__ico svg{width:24px;height:24px}
 .clients{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:34px 50px;margin-top:36px}

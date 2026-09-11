@@ -454,6 +454,68 @@ test('K4 EN home has a Thai language switcher', () => {
 });
 
 /* =========================================================================
+   L. Alternating section bands
+   Bands run down each page white / paper / white…  The hero's gradient ends on
+   paper, so it counts as a grey band and the first section under it must be
+   white. Two same-tone bands touching read as one oversized slab — that is the
+   bug this catches. Tone comes from `--paper` alone; `--ink` only adds the
+   rules top and bottom, so a grey emphasis band is `section--paper section--ink`.
+   ========================================================================= */
+// Direct <section> children of <main>, with their class attribute.
+function bandsOf(html) {
+  const open = /<main[^>]*>/i.exec(html);
+  if (!open) return [];
+  const from = open.index + open[0].length;
+  const to = html.toLowerCase().indexOf('</main>', from);
+  if (to < 0) return [];
+  const inner = html.slice(from, to);
+  const out = [];
+  let depth = 0, m;
+  const re = /<(\/?)section\b([^>]*)>/gi;
+  while ((m = re.exec(inner))) {
+    if (m[1] === '/') { depth--; continue; }
+    if (depth === 0) out.push((/class="([^"]*)"/.exec(m[2]) || [, ''])[1].replace(/\s+/g, ' ').trim());
+    depth++;
+  }
+  return out;
+}
+const toneOf = (cls) =>
+  /\bhero\b/.test(cls) ? 'grey' : /\bsection--paper\b/.test(cls) ? 'grey' : /\bsection\b/.test(cls) ? 'white' : null;
+// Legal pages use .lg-sec rules, not bands.
+const bandPages = pages.filter((p) => !p.html.includes('qe-legal'));
+
+test('L1 section bands alternate (no two same-tone bands touching)', () =>
+  bandPages.flatMap((p) => {
+    const b = bandsOf(p.html);
+    const errs = [];
+    for (let i = 1; i < b.length; i++) {
+      const a = toneOf(b[i - 1]), c = toneOf(b[i]);
+      if (a && c && a === c)
+        errs.push(`${p.rel}: band ${i - 1} "${b[i - 1]}" and band ${i} "${b[i]}" are both ${c}`);
+    }
+    return errs;
+  }));
+
+test('L2 every band is a .section (or the hero)', () =>
+  bandPages.flatMap((p) =>
+    bandsOf(p.html)
+      .filter((c) => toneOf(c) === null)
+      .map((c) => `${p.rel}: <section class="${c}"> is not a band component`)));
+
+test('L3 band tone comes only from --paper (no hardcoded --ink background)', () => {
+  const css = read(path.join(ROOT, 'assets/css/main.css'));
+  const errs = [];
+  const light = css.split(':root[data-theme="dark"]')[0];
+  if (/(^|\n|})\s*\.section--ink\s*{[^}]*background/.test(light))
+    errs.push('.section--ink hardcodes a background in light mode — it must inherit its tone from --paper');
+  if (/\.section--\w+\s*\+\s*\.section--/.test(css))
+    errs.push('adjacent-sibling band override is back in main.css — fix the page markup instead');
+  if (!/\.section--paper{background:var\(--paper\)}/.test(css))
+    errs.push('.section--paper no longer sets the paper background');
+  return errs;
+});
+
+/* =========================================================================
    Report
    ========================================================================= */
 let passed = 0, failed = 0;
