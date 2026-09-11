@@ -20,6 +20,12 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
 const DRY = process.argv.includes('--dry-run');
+// `aws s3 sync` compares size and mtime, never metadata, so editing cacheControl in
+// deploy.config.json changes nothing for files whose bytes did not also change — and
+// anything uploaded before headers were used keeps no header at all. --refresh-headers
+// re-uploads each asset group unconditionally to reapply them. Run it after changing a
+// cache-control value; normal deploys stay incremental.
+const REFRESH = process.argv.includes('--refresh-headers');
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'deploy.config.json'), 'utf8'));
 const { bucket, region, cloudfrontDistributionId: distId, url: siteUrl } = cfg.aws;
 
@@ -82,6 +88,18 @@ for (const [name, group] of Object.entries(cfg.cacheControl)) {
   if (name === '_comment' || !group.paths) continue;
   for (const p of group.paths) {
     if (!fs.existsSync(path.join(ROOT, p))) { ok(`${p} — not present, skipped`); continue; }
+    if (REFRESH) {
+      // cp --recursive always re-uploads, so every object gets the header. Uploading
+      // from local (rather than an S3-to-S3 copy) keeps Content-Type correct — a
+      // same-bucket copy with --metadata-directive REPLACE resets it to
+      // binary/octet-stream unless every type is restated.
+      const forced = aws(
+        `s3 cp ${q('./' + p)} ${q(`s3://${bucket}/${p}`)} --recursive --cache-control ${q(group.value)}${dryFlag}`,
+        { capture: true }
+      );
+      ok(`${p} → ${group.value}  (${plural(counted(forced), 'file')}, headers reapplied)`);
+      continue;
+    }
     const out = aws(
       `s3 sync ${q('./' + p)} ${q(`s3://${bucket}/${p}`)} --delete --cache-control ${q(group.value)}${dryFlag}`,
       { capture: true }
